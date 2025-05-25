@@ -11,6 +11,12 @@ tsc:
 run: tsc
 	$(NODE) dist/main.js
 
+test/watch:
+	$(PNPM) test
+
+test:
+	$(PNPM) test --run
+
 lint: lint/prettier
 
 lint/fix: lint/prettier/fix

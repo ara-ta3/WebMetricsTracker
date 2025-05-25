@@ -23,7 +23,8 @@
     "allowUnusedLabels": true,
     "allowUnreachableCode": true,
     "rootDir": "./src",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "types": ["node", "vitest/blobals"]
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
