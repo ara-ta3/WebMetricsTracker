@@ -5,7 +5,7 @@ import type { PVQuery } from "./query/PVQuery.js";
 export class GA4PVCollector {
   constructor(
     public readonly pvQuery: PVQuery,
-    public readonly slackCommand: SlackCommand
+    public readonly slackCommand: SlackCommand,
   ) {}
 
   public collectAndNotifyPV(properties: string[]): Effect.Effect<void, Error> {
@@ -21,7 +21,7 @@ export class GA4PVCollector {
       }),
       Effect.flatMap((message) => {
         return this.slackCommand.postMessage(message);
-      })
+      }),
     );
   }
 }

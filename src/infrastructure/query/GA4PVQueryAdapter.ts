@@ -31,10 +31,10 @@ export class Ga4PVQueryAdapter implements PVQuery {
             property: p[0].displayName ?? id,
             pv: Number(r[0].rows?.[0]?.metricValues?.[0]?.value ?? "0"),
             activeUsers: Number(
-              r[0].rows?.[0]?.metricValues?.[1]?.value ?? "0"
+              r[0].rows?.[0]?.metricValues?.[1]?.value ?? "0",
             ),
           };
-        })
+        }),
       )
         .then((reports) => {
           return resume(Effect.succeed(reports));
