@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { pipe } from "effect";
-import { Effect } from "effect";
+import { Effect, pipe } from "effect";
 
 import { GA4PVCollector } from "./GA4PVCollector.js";
 import { MockPVQuery } from "./query/PVQuery.mock.js";
