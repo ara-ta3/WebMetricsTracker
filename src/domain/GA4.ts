@@ -1,6 +1,4 @@
-export class GA4Data {
-  constructor(
-    public readonly property: string,
-    public readonly pv: number
-  ) {}
+export interface GA4Data {
+  property: string;
+  pv: number;
 }
