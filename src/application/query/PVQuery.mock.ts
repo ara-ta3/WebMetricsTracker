@@ -9,6 +9,7 @@ export class MockPVQuery implements PVQuery {
     const data: GA4Data[] = properties.map((property) => ({
       property,
       pv: this.samplePv,
+      activeUsers: this.samplePv / 2,
     }));
     return Effect.succeed(data);
   }
