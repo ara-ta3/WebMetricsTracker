@@ -6,3 +6,14 @@ install:
 
 tsc:
 	$(NPX) tsc
+
+lint: lint/prettier
+
+lint/fix: lint/prettier/fix
+
+lint/prettier:
+	$(NPX) prettier --check 'src/**/*.{ts,tsx,json,css}'
+
+
+lint/prettier/fix:
+	$(NPX) prettier --write 'src/**/*.{ts,tsx,json,css}'
