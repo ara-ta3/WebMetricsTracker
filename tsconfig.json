@@ -11,8 +11,6 @@
     /* Projects */
     "target": "ESNext",
     "module": "NodeNext",
-    "noEmit": true,
-    "allowImportingTsExtensions": true,
     "erasableSyntaxOnly": true,
 
     /* Type Checking */
@@ -25,10 +23,9 @@
     "noUncheckedIndexedAccess": true,
     "allowUnusedLabels": true,
     "allowUnreachableCode": true,
-
-    "rootDir": "src",
-    "outDir": "dist",
-    "include": ["src/**/*"],
-    "exclude": ["node_modules", "dist"]
-  }
+    "rootDir": "./src",
+    "outDir": "./dist"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
