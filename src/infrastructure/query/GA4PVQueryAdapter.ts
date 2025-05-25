@@ -1,12 +1,18 @@
 import { Effect } from "effect";
 import type { GA4Data } from "../../domain/GA4.js";
 import { BetaAnalyticsDataClient } from "@google-analytics/data";
+import { AnalyticsAdminServiceClient } from "@google-analytics/admin";
 import type { PVQuery } from "../../application/query/PVQuery.js";
 
 export class Ga4PVQueryAdapter implements PVQuery {
   readonly ga4: BetaAnalyticsDataClient;
+  readonly admin: AnalyticsAdminServiceClient;
+
   constructor(path: string) {
     this.ga4 = new BetaAnalyticsDataClient({
+      keyFilename: path,
+    });
+    this.admin = new AnalyticsAdminServiceClient({
       keyFilename: path,
     });
   }
@@ -14,25 +20,24 @@ export class Ga4PVQueryAdapter implements PVQuery {
   getPV(properties: string[]): Effect.Effect<GA4Data[], Error> {
     return Effect.async((resume) => {
       Promise.all(
-        properties.map((id) =>
-          this.ga4.runReport({
+        properties.map(async (id) => {
+          const p = await this.admin.getProperty({ name: `properties/${id}` });
+          const r = await this.ga4.runReport({
             property: `properties/${id}`,
             dateRanges: [{ startDate: "yesterday", endDate: "yesterday" }],
             metrics: [{ name: "screenPageViews" }, { name: "activeUsers" }],
-          })
-        )
+          });
+          return {
+            property: p[0].displayName ?? id,
+            pv: Number(r[0].rows?.[0]?.metricValues?.[0]?.value ?? "0"),
+            activeUsers: Number(
+              r[0].rows?.[0]?.metricValues?.[1]?.value ?? "0"
+            ),
+          };
+        })
       )
         .then((reports) => {
-          const result: GA4Data[] = reports.map(([report], i) => {
-            return {
-              property: properties[i] ?? "",
-              pv: Number(report.rows?.[0]?.metricValues?.[0]?.value ?? "0"),
-              activeUsers: Number(
-                report.rows?.[0]?.metricValues?.[1]?.value ?? "0"
-              ),
-            };
-          });
-          return resume(Effect.succeed(result));
+          return resume(Effect.succeed(reports));
         })
         .catch((err) => resume(Effect.fail(err as Error)));
     });
