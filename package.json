@@ -1,5 +1,6 @@
 {
   "name": "GA4Tracker",
+  "type": "module",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -14,5 +15,8 @@
     "@types/node": "^22.15.21",
     "prettier": "^3.5.3",
     "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "effect": "^3.15.4"
   }
 }
