@@ -14,7 +14,7 @@ export class GA4PVCollector {
       Effect.flatMap((pvs) => {
         const formated = pvs
           .map((pv) => {
-            return `Property: ${pv.property}, Page views: ${pv.pv}`;
+            return `Property: ${pv.property}, Page views: ${pv.pv}, Active Users: ${pv.activeUsers}`;
           })
           .join("\n");
         return Effect.succeed(formated);

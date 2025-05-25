@@ -5,8 +5,7 @@ export class SlackCommandAdapter implements SlackCommand {
   constructor() {}
 
   postMessage(message: string): Effect.Effect<void, Error> {
-    return Effect.succeed(() => {
-      console.log(message);
-    });
+    console.log(message);
+    return Effect.succeed("");
   }
 }
