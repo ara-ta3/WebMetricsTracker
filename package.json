@@ -18,6 +18,7 @@
     "vitest": "^3.1.4"
   },
   "dependencies": {
+    "@google-analytics/data": "^5.1.0",
     "effect": "^3.15.4"
   }
 }
