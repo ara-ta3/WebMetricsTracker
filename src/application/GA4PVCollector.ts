@@ -3,7 +3,7 @@ import type { SlackCommand } from "./command/SlackCommand.js";
 import type { PVQuery } from "./query/PVQuery.js";
 
 export class GA4PVCollector {
-  private constructor(
+  constructor(
     public readonly pvQuery: PVQuery,
     public readonly slackCommand: SlackCommand
   ) {}
@@ -17,7 +17,7 @@ export class GA4PVCollector {
             return `Property: ${pv.property}, Page views: ${pv.pv}`;
           })
           .join("\n");
-        return Effect.succeed(`Page views: ${formated}`);
+        return Effect.succeed(formated);
       }),
       Effect.flatMap((message) => {
         return this.slackCommand.postMessage(message);
