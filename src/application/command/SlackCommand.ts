@@ -1,5 +1,6 @@
 import { Effect } from "effect";
+import type { SlackMessage } from "../../domain/SlackMessage.js";
 
 export interface SlackCommand {
-  postMessage(message: string): Effect.Effect<void, Error>;
+  postMessage(message: SlackMessage): Effect.Effect<void, Error>;
 }

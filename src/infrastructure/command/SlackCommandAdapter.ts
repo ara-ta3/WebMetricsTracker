@@ -1,17 +1,18 @@
 import { Effect } from "effect";
 import fetch from "node-fetch";
 import type { SlackCommand } from "../../application/command/SlackCommand.js";
+import type { SlackMessage } from "../../domain/SlackMessage.js";
 
 export class SlackCommandAdapter implements SlackCommand {
   constructor(private readonly webhookUrl: string) {}
 
-  postMessage(message: string): Effect.Effect<void, Error> {
+  postMessage(message: SlackMessage): Effect.Effect<void, Error> {
     return Effect.try({
       try: async () => {
         const res = await fetch(this.webhookUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text: message }),
+          body: JSON.stringify(message),
         });
         if (!res.ok) {
           const body = await res.text();
