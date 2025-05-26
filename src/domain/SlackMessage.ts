@@ -30,16 +30,32 @@ export function from(ga4s: GA4Data[]): SlackMessage {
     text: "📊 GA4データレポート",
     emoji: true,
   };
-  const data = ga4s.flatMap((data) => {
-    const fields: SlackMrkdwnText[] = [
-      { type: "mrkdwn", text: `*Property:*\n${data.property}` },
-      { type: "mrkdwn", text: `*PV:*\n${data.pv.toLocaleString()}` },
+  const data: SlackBlock[] = ga4s.flatMap((data) => {
+    return [
       {
-        type: "mrkdwn",
-        text: `*Active Users:*\n${data.activeUsers.toLocaleString()}`,
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `*${data.property}*`,
+        },
+      },
+      {
+        type: "section",
+        fields: [
+          {
+            type: "mrkdwn",
+            text: `*Daily PV:* ${data.pv}`,
+          },
+          {
+            type: "mrkdwn",
+            text: `*DAU:* ${data.activeUsers}`,
+          },
+        ],
+      },
+      {
+        type: "divider",
       },
     ];
-    return [{ type: "section", fields }, { type: "divider" }];
   });
   return {
     blocks: [{ type: "header", text: header }, ...data],
