@@ -6,6 +6,8 @@
     "strict": true,
     "skipLibCheck": true,
     "verbatimModuleSyntax": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
 
     /* Projects */
     "target": "ESNext",

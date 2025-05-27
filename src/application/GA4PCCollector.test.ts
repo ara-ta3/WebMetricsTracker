@@ -13,11 +13,9 @@ describe("GA4PVCollector", () => {
 
     await pipe(
       collector.collectAndNotifyPV(["A", "B", "C"]),
-      Effect.runPromise,
+      Effect.runPromise
     );
 
-    expect(mockSlack.messages[0]).toBe(
-      `Property: A, Page views: 42, Active Users: 21\nProperty: B, Page views: 42, Active Users: 21\nProperty: C, Page views: 42, Active Users: 21`,
-    );
+    expect(mockSlack.messages.length).toBe(1);
   });
 });

@@ -3,12 +3,15 @@ import type { GA4Data } from "../../domain/GA4.js";
 import { BetaAnalyticsDataClient } from "@google-analytics/data";
 import { AnalyticsAdminServiceClient } from "@google-analytics/admin";
 import type { PVQuery } from "../../application/query/PVQuery.js";
+import { inject, injectable } from "inversify";
+import { TYPES } from "../../config/Types.js";
 
+@injectable()
 export class Ga4PVQueryAdapter implements PVQuery {
   readonly ga4: BetaAnalyticsDataClient;
   readonly admin: AnalyticsAdminServiceClient;
 
-  constructor(path: string) {
+  constructor(@inject(TYPES.config.GoogleKeyFilePath) path: string) {
     this.ga4 = new BetaAnalyticsDataClient({
       keyFilename: path,
     });

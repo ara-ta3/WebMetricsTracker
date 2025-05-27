@@ -2,11 +2,17 @@ import { Effect, pipe } from "effect";
 import type { SlackCommand } from "./command/SlackCommand.js";
 import type { PVQuery } from "./query/PVQuery.js";
 import { from } from "../domain/SlackMessage.js";
+import { inject, injectable } from "inversify";
+import { TYPES } from "../config/Types.js";
 
+@injectable()
 export class GA4PVCollector {
   constructor(
+    @inject(TYPES.PVQuery)
     public readonly pvQuery: PVQuery,
-    public readonly slackCommand: SlackCommand
+
+    @inject(TYPES.SlackCommand)
+    public readonly slackCommand: SlackCommand,
   ) {}
 
   public collectAndNotifyPV(properties: string[]): Effect.Effect<void, Error> {
@@ -15,7 +21,7 @@ export class GA4PVCollector {
       Effect.map((pvs) => from(pvs)),
       Effect.flatMap((message) => {
         return this.slackCommand.postMessage(message);
-      })
+      }),
     );
   }
 }
