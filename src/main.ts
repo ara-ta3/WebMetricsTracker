@@ -6,7 +6,7 @@ import { container } from "./config/Container.js";
 function propeties(): Config.Config<string[]> {
   return pipe(
     Config.string("GA_PROPERTIES"),
-    Config.map((v) => v.split(",").map((s) => s.trim()))
+    Config.map((v) => v.split(",").map((s) => s.trim())),
   );
 }
 
@@ -15,7 +15,7 @@ async function main(): Promise<void> {
   await pipe(
     propeties(),
     Effect.flatMap((propertyIds) => collector.collectAndNotifyPV(propertyIds)),
-    Effect.runPromise
+    Effect.runPromise,
   );
 }
 
