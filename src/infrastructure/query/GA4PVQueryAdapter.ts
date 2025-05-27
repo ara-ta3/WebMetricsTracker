@@ -21,9 +21,9 @@ export class Ga4PVQueryAdapter implements PVQuery {
   }
 
   getPV(properties: string[]): Effect.Effect<GA4Data[], Error> {
-    return Effect.async((resume) => {
-      Promise.all(
-        properties.map(async (id) => {
+    return Effect.all(
+      properties.map((id) =>
+        Effect.promise(async () => {
           const p = await this.admin.getProperty({ name: `properties/${id}` });
           const r = await this.ga4.runReport({
             property: `properties/${id}`,
@@ -38,11 +38,7 @@ export class Ga4PVQueryAdapter implements PVQuery {
             ),
           };
         }),
-      )
-        .then((reports) => {
-          return resume(Effect.succeed(reports));
-        })
-        .catch((err) => resume(Effect.fail(err as Error)));
-    });
+      ),
+    );
   }
 }
