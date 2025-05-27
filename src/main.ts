@@ -1,6 +1,7 @@
 import { Effect, pipe } from "effect";
 import { GA4PVCollector } from "./application/GA4PVCollector.js";
-import { container, TYPES } from "./config/Container.js";
+import { TYPES } from "./config/Types.js";
+import { container } from "./config/Container.js";
 
 async function main(): Promise<void> {
   const propertyIds = process.env.GA_PROPERTIES?.split(",") || [];

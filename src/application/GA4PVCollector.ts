@@ -3,7 +3,7 @@ import type { SlackCommand } from "./command/SlackCommand.js";
 import type { PVQuery } from "./query/PVQuery.js";
 import { from } from "../domain/SlackMessage.js";
 import { inject, injectable } from "inversify";
-import { TYPES } from "../config/Container.js";
+import { TYPES } from "../config/Types.js";
 
 @injectable()
 export class GA4PVCollector {

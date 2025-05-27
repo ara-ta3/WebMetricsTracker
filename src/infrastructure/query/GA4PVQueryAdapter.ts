@@ -4,7 +4,7 @@ import { BetaAnalyticsDataClient } from "@google-analytics/data";
 import { AnalyticsAdminServiceClient } from "@google-analytics/admin";
 import type { PVQuery } from "../../application/query/PVQuery.js";
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../config/Container.js";
+import { TYPES } from "../../config/Types.js";
 
 @injectable()
 export class Ga4PVQueryAdapter implements PVQuery {

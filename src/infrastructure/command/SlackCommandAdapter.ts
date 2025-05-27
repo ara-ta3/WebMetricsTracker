@@ -3,7 +3,7 @@ import fetch from "node-fetch";
 import type { SlackCommand } from "../../application/command/SlackCommand.js";
 import type { SlackMessage } from "../../domain/SlackMessage.js";
 import { inject, injectable } from "inversify";
-import { TYPES } from "../../config/Container.js";
+import { TYPES } from "../../config/Types.js";
 
 @injectable()
 export class SlackCommandAdapter implements SlackCommand {
