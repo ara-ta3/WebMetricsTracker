@@ -3,12 +3,15 @@ import type { GA4Data } from "../../domain/GA4.js";
 import { BetaAnalyticsDataClient } from "@google-analytics/data";
 import { AnalyticsAdminServiceClient } from "@google-analytics/admin";
 import type { PVQuery } from "../../application/query/PVQuery.js";
+import { inject, injectable } from "inversify";
+import { TYPES } from "../../config/Container.js";
 
+@injectable()
 export class Ga4PVQueryAdapter implements PVQuery {
   readonly ga4: BetaAnalyticsDataClient;
   readonly admin: AnalyticsAdminServiceClient;
 
-  constructor(path: string) {
+  constructor(@inject(TYPES.config.GoogleKeyFilePath) path: string) {
     this.ga4 = new BetaAnalyticsDataClient({
       keyFilename: path,
     });
@@ -31,10 +34,10 @@ export class Ga4PVQueryAdapter implements PVQuery {
             property: p[0].displayName ?? id,
             pv: Number(r[0].rows?.[0]?.metricValues?.[0]?.value ?? "0"),
             activeUsers: Number(
-              r[0].rows?.[0]?.metricValues?.[1]?.value ?? "0",
+              r[0].rows?.[0]?.metricValues?.[1]?.value ?? "0"
             ),
           };
-        }),
+        })
       )
         .then((reports) => {
           return resume(Effect.succeed(reports));
