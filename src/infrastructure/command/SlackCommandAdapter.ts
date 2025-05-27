@@ -8,7 +8,7 @@ import { TYPES } from "../../config/Types.js";
 @injectable()
 export class SlackCommandAdapter implements SlackCommand {
   constructor(
-    @inject(TYPES.config.SlackWebhookUrl) private readonly webhookUrl: string
+    @inject(TYPES.config.SlackWebhookUrl) private readonly webhookUrl: string,
   ) {}
 
   postMessage(message: SlackMessage): Effect.Effect<void, Error> {
