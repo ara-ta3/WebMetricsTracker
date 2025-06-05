@@ -29,9 +29,7 @@ describe("main", () => {
     container.unbind(TYPES.ErrorReporter);
     container.bind(TYPES.ErrorReporter).toConstantValue(mockNotifier);
     process.env.GA_PROPERTIES = "A";
-    const exitMock = vi
-      .spyOn(process, "exit")
-      .mockImplementation(() => void 0);
+    const exitMock = vi.spyOn(process, "exit").mockImplementation(() => void 0);
 
     await import("./main.js");
     await Promise.resolve();
