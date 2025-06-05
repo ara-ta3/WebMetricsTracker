@@ -7,8 +7,8 @@ import { SlackCommandAdapter } from "../infrastructure/command/SlackCommandAdapt
 import { envConfig } from "./EnvConfig.js";
 import { TYPES } from "./Types.js";
 import { GA4PVCollector } from "../application/GA4PVCollector.js";
-import type { ErrorNotifier } from "../application/ErrorNotifier.js";
-import { SentryErrorNotifier } from "../infrastructure/error/SentryErrorNotifier.js";
+import type { ErrorReporter } from "../application/ErrorReporter.js";
+import { SentryErrorReporter } from "../infrastructure/error/SentryErrorReporter.js";
 
 const container = new Container();
 
@@ -37,8 +37,8 @@ container
   .inSingletonScope();
 
 container
-  .bind<ErrorNotifier>(TYPES.ErrorNotifier)
-  .to(SentryErrorNotifier)
+  .bind<ErrorReporter>(TYPES.ErrorReporter)
+  .to(SentryErrorReporter)
   .inSingletonScope();
 
 export { container };

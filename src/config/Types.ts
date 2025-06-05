@@ -7,5 +7,5 @@ export const TYPES = {
   PVQuery: Symbol.for("PQuery"),
   SlackCommand: Symbol.for("SlackCommand"),
   GA4PVCollector: Symbol.for("GA4PVCollector"),
-  ErrorNotifier: Symbol.for("ErrorNotifier"),
+  ErrorReporter: Symbol.for("ErrorReporter"),
 };

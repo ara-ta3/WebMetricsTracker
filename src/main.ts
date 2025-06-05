@@ -1,6 +1,6 @@
 import { Config, Effect, pipe } from "effect";
 import { GA4PVCollector } from "./application/GA4PVCollector.js";
-import type { ErrorNotifier } from "./application/ErrorNotifier.js";
+import type { ErrorReporter } from "./application/ErrorReporter.js";
 import { TYPES } from "./config/Types.js";
 import { container } from "./config/Container.js";
 
@@ -21,7 +21,7 @@ export async function main(): Promise<void> {
 }
 
 main().catch(async (err) => {
-  const notifier = container.get<ErrorNotifier>(TYPES.ErrorNotifier);
+  const notifier = container.get<ErrorReporter>(TYPES.ErrorReporter);
   await Effect.runPromise(notifier.notify(err));
   process.exit(1);
 });

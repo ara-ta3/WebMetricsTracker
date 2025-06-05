@@ -1,11 +1,11 @@
 import { Effect } from "effect";
 import { inject, injectable } from "inversify";
 import * as Sentry from "@sentry/node";
-import type { ErrorNotifier } from "../../application/ErrorNotifier.js";
+import type { ErrorReporter } from "../../application/ErrorReporter.js";
 import { TYPES } from "../../config/Types.js";
 
 @injectable()
-export class SentryErrorNotifier implements ErrorNotifier {
+export class SentryErrorReporter implements ErrorReporter {
   constructor(@inject(TYPES.config.SentryDsn) dsn: string) {
     Sentry.init({ dsn });
   }

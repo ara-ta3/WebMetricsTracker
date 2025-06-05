@@ -1,7 +1,7 @@
 import { Effect } from "effect";
-import type { ErrorNotifier } from "./ErrorNotifier.js";
+import type { ErrorReporter } from "./ErrorReporter.js";
 
-export class MockErrorNotifier implements ErrorNotifier {
+export class MockErrorReporter implements ErrorReporter {
   public readonly errors: unknown[] = [];
 
   notify(err: unknown): Effect.Effect<void, Error> {
