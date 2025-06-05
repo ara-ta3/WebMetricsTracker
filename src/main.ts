@@ -22,6 +22,6 @@ export async function main(): Promise<void> {
 
 main().catch(async (err) => {
   const notifier = container.get<ErrorReporter>(TYPES.ErrorReporter);
-  await Effect.runPromise(notifier.notify(err));
+  await Effect.runPromise(notifier.report(err));
   process.exit(1);
 });

@@ -10,7 +10,7 @@ export class SentryErrorReporter implements ErrorReporter {
     Sentry.init({ dsn });
   }
 
-  notify(err: unknown): Effect.Effect<void, Error> {
+  report(err: unknown): Effect.Effect<void, Error> {
     return Effect.try({
       try: () => {
         Sentry.captureException(err);
