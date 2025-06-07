@@ -1,5 +1,5 @@
 PNPM=pnpm
-NPX=npx
+NPX=pnpm exec
 NODE=node
 
 install:
