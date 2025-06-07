@@ -1,0 +1,27 @@
+name: Daily Run
+
+on:
+  schedule:
+    - cron: '0 21 * * *'
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: curl -fsSL https://get.pnpm.io/install.sh | bash -
+      - run: echo '/home/runner/.local/share/pnpm:$PATH' >> $GITHUB_PATH
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.x'
+      - name: Install dependencies
+        run: make install
+      - name: Run Application
+        run: make run
+        env:
+          GA_KEYFILE: ${{ secrets.GA_KEYFILE }}
+          GA_PROPERTIES: ${{ secrets.GA_PROPERTIES }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+
