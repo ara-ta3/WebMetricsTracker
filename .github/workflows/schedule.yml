@@ -22,3 +22,11 @@ jobs:
           GA_PROPERTIES: ${{ secrets.GA_PROPERTIES }}
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+      - name: Notify failure
+        if: failure()
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        run: |
+          curl -X POST -H 'Content-type: application/json' \
+            --data '{"text":"Daily run failed: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}' \
+            "$SLACK_WEBHOOK"
