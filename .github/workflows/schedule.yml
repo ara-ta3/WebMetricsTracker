@@ -15,9 +15,10 @@ jobs:
           node-version: "22.x"
           cache: "pnpm"
       - run: make install
+      - run: base64 --decode -i ${{ secrets.SERVICE_ACCOUNT_KEY_BASE64_TEXT }} > ServiceAccountKey.json
       - run: make run
         env:
-          GA_KEYFILE: ${{ secrets.GA_KEYFILE }}
+          GA_KEYFILE: ServiceAccountKey.json
           GA_PROPERTIES: ${{ secrets.GA_PROPERTIES }}
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}

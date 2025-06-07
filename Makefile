@@ -1,5 +1,6 @@
 PNPM=pnpm
 NODE=node
+ACT=act
 
 install:
 	$(PNPM) install
@@ -25,3 +26,9 @@ lint/prettier:
 
 lint/prettier/fix:
 	$(PNPM) exec prettier --write 'src/**/*.{ts,tsx,json,css}'
+
+act/ci:
+	$(ACT) ci
+
+act/schedule:
+	$(ACT) schedule
