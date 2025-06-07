@@ -1,0 +1,24 @@
+name: Daily Run
+
+on:
+  schedule:
+    - cron: "0 21 * * *"
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.x"
+          cache: "pnpm"
+      - run: make install
+      - run: base64 --decode -i ${{ secrets.SERVICE_ACCOUNT_KEY_BASE64_TEXT }} > ServiceAccountKey.json
+      - run: make run
+        env:
+          GA_KEYFILE: ServiceAccountKey.json
+          GA_PROPERTIES: ${{ secrets.GA_PROPERTIES }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}

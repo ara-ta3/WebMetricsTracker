@@ -1,12 +1,12 @@
 PNPM=pnpm
-NPX=pnpm exec
 NODE=node
+ACT=act
 
 install:
 	$(PNPM) install
 
 tsc:
-	$(NPX) tsc 
+	$(PNPM) exec tsc
 
 run: tsc
 	$(NODE) dist/main.js
@@ -22,7 +22,13 @@ lint: lint/prettier
 lint/fix: lint/prettier/fix
 
 lint/prettier:
-	$(NPX) prettier --check 'src/**/*.{ts,tsx,json,css}'
+	$(PNPM) exec prettier --check 'src/**/*.{ts,tsx,json,css}'
 
 lint/prettier/fix:
-	$(NPX) prettier --write 'src/**/*.{ts,tsx,json,css}'
+	$(PNPM) exec prettier --write 'src/**/*.{ts,tsx,json,css}'
+
+act/ci:
+	$(ACT) ci
+
+act/schedule:
+	$(ACT) schedule
