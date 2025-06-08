@@ -15,7 +15,7 @@ jobs:
           node-version: "22.x"
           cache: "pnpm"
       - run: make install
-      - run: base64 --decode -i ${{ secrets.SERVICE_ACCOUNT_KEY_BASE64_TEXT }} > ServiceAccountKey.json
+      - run: echo "${{ secrets.SERVICE_ACCOUNT_KEY_BASE64_TEXT }}" | base64 --decode > ServiceAccountKey.json
       - run: make run
         env:
           GA_KEYFILE: ServiceAccountKey.json
