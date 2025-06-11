@@ -16,7 +16,7 @@ importers:
         version: 5.1.0
       '@sentry/node':
         specifier: ^9.0.0
-        version: 9.28.0
+        version: 9.28.1
       dotenv:
         specifier: ^16.5.0
         version: 16.5.0
@@ -566,16 +566,16 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@sentry/core@9.28.0':
-    resolution: {integrity: sha512-vzD9xhg9S864jxfCpq77feCE4y7iP2cZYsNMoTupl1vTUlmXlhp7XgF832fEMjEZq4vrPhaqCNsde7Sc3PAbaQ==}
+  '@sentry/core@9.28.1':
+    resolution: {integrity: sha512-6q59r/71MeE+4StkvwdKAAyhBBNpWcii0HeiWBZ3l1gaFYQlb6bChjZJRZmxSzF5dnvkdF4duQbAC3JmjeIbPA==}
     engines: {node: '>=18'}
 
-  '@sentry/node@9.28.0':
-    resolution: {integrity: sha512-CIui2wthO7oBTRih9pGopKiPdPA/Kyg/orLkwVh6dfSzhSORFTzH1lJrCpoPTfUIZwilLBTwjINBENHGLA4u3A==}
+  '@sentry/node@9.28.1':
+    resolution: {integrity: sha512-1bC8ywFPs1EIKzRlUhLoreTR/fUU45O+ezVNvOu0I6JURMwjyC8uT23f0Xkiolx4WjKZXER+d0el3HojPaYkYw==}
     engines: {node: '>=18'}
 
-  '@sentry/opentelemetry@9.28.0':
-    resolution: {integrity: sha512-Zieujs3aPmfMm2vDFWnIwVTq/4lY5XM/q068xMG4IipHyIc/4rgZLWq40/C0ryLepoWjcym7c7QScgU4Y9fQjw==}
+  '@sentry/opentelemetry@9.28.1':
+    resolution: {integrity: sha512-1xxriB2diNSlNpkMosdgIKzPOPwAiyFg7XgEWKpLtDYWj7WVbLNyLkUWriFr4JgU40uZp3LW+sGgnshA48/zQQ==}
     engines: {node: '>=18'}
     peerDependencies:
       '@opentelemetry/api': ^1.9.0
@@ -713,8 +713,8 @@ packages:
   bignumber.js@9.3.0:
     resolution: {integrity: sha512-EM7aMFTXbptt/wZdMlBv2t8IViwQL+h6SLHosp8Yf0dqJMTnY6iL32opnAB6kAdL0SZPuvcAzFr31o0c/R3/RA==}
 
-  brace-expansion@2.0.1:
-    resolution: {integrity: sha512-XnAIvQ8eM+kC6aULx6wuQiwVsnzsi9d3WxzV3FpWTGA19F621kwdbsAcFKXgKUHZWsy+mY6iL1sHTxWEFCytDA==}
+  brace-expansion@2.0.2:
+    resolution: {integrity: sha512-Jt0vHyM+jmUBqojB7E1NIYadt0vI0Qxjxd2TErW94wDz+E2LAm5vKMXXwg6ZZBTHPuUlDgQHKXvjGBdfcF1ZDQ==}
 
   buffer-equal-constant-time@1.0.1:
     resolution: {integrity: sha512-zRpUiDwd/xk6ADqPMATG8vc9VPrkck7T07OIx0gnjmJAnHnTVXNQG3vfvWNuiZIkwu9KrKdA1iJKfsfTVxE6NA==}
@@ -1780,9 +1780,9 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.42.0':
     optional: true
 
-  '@sentry/core@9.28.0': {}
+  '@sentry/core@9.28.1': {}
 
-  '@sentry/node@9.28.0':
+  '@sentry/node@9.28.1':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/context-async-hooks': 1.30.1(@opentelemetry/api@1.9.0)
@@ -1814,14 +1814,14 @@ snapshots:
       '@opentelemetry/sdk-trace-base': 1.30.1(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.34.0
       '@prisma/instrumentation': 6.8.2(@opentelemetry/api@1.9.0)
-      '@sentry/core': 9.28.0
-      '@sentry/opentelemetry': 9.28.0(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/core@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.57.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.34.0)
+      '@sentry/core': 9.28.1
+      '@sentry/opentelemetry': 9.28.1(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/core@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.57.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.34.0)
       import-in-the-middle: 1.14.0
       minimatch: 9.0.5
     transitivePeerDependencies:
       - supports-color
 
-  '@sentry/opentelemetry@9.28.0(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/core@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.57.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.34.0)':
+  '@sentry/opentelemetry@9.28.1(@opentelemetry/api@1.9.0)(@opentelemetry/context-async-hooks@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/core@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/instrumentation@0.57.2(@opentelemetry/api@1.9.0))(@opentelemetry/sdk-trace-base@1.30.1(@opentelemetry/api@1.9.0))(@opentelemetry/semantic-conventions@1.34.0)':
     dependencies:
       '@opentelemetry/api': 1.9.0
       '@opentelemetry/context-async-hooks': 1.30.1(@opentelemetry/api@1.9.0)
@@ -1829,7 +1829,7 @@ snapshots:
       '@opentelemetry/instrumentation': 0.57.2(@opentelemetry/api@1.9.0)
       '@opentelemetry/sdk-trace-base': 1.30.1(@opentelemetry/api@1.9.0)
       '@opentelemetry/semantic-conventions': 1.34.0
-      '@sentry/core': 9.28.0
+      '@sentry/core': 9.28.1
 
   '@standard-schema/spec@1.0.0': {}
 
@@ -1964,7 +1964,7 @@ snapshots:
 
   bignumber.js@9.3.0: {}
 
-  brace-expansion@2.0.1:
+  brace-expansion@2.0.2:
     dependencies:
       balanced-match: 1.0.2
 
@@ -2301,7 +2301,7 @@ snapshots:
 
   minimatch@9.0.5:
     dependencies:
-      brace-expansion: 2.0.1
+      brace-expansion: 2.0.2
 
   module-details-from-path@1.0.4: {}
 
