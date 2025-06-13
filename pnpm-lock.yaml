@@ -22,7 +22,7 @@ importers:
         version: 16.5.0
       effect:
         specifier: ^3.15.4
-        version: 3.16.6
+        version: 3.16.7
       inversify:
         specifier: ^7.5.1
         version: 7.5.2(reflect-metadata@0.2.2)
@@ -788,8 +788,8 @@ packages:
   ecdsa-sig-formatter@1.0.11:
     resolution: {integrity: sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==}
 
-  effect@3.16.6:
-    resolution: {integrity: sha512-Hs1hsUrYEAxZBsVu+zBVvd+WuHT5OdWa/+ujh81w1PHNDLa/iq+iBuhYGS1+K89312IMmmzI/qu9UkHU1AeNdw==}
+  effect@3.16.7:
+    resolution: {integrity: sha512-UEE1lXpXrx3h+HGgKDaNlyBpHanpjBdSbxAPl0lEQJ6dFyc8Fs22D6zLMp2HkS22H50GS7ZEVpSeO52He+9oTw==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -2034,7 +2034,7 @@ snapshots:
     dependencies:
       safe-buffer: 5.2.1
 
-  effect@3.16.6:
+  effect@3.16.7:
     dependencies:
       '@standard-schema/spec': 1.0.0
       fast-check: 3.23.2
