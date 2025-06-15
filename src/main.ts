@@ -3,11 +3,12 @@ import { GA4PVCollector } from "./application/GA4PVCollector.js";
 import type { ErrorReporter } from "./application/ErrorReporter.js";
 import { TYPES } from "./config/Types.js";
 import { container } from "./config/Container.js";
+import { loadWebsiteConfigs, extractGA4PropertyIds } from "./config/YamlConfigLoader.js";
 
 function propeties(): Config.Config<string[]> {
   return pipe(
-    Config.string("GA_PROPERTIES"),
-    Config.map((v) => v.split(",").map((s) => s.trim())),
+    loadWebsiteConfigs(),
+    Config.map(extractGA4PropertyIds),
   );
 }
 

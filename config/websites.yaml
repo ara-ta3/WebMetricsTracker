@@ -1,0 +1,24 @@
+# WebMetricsTracker 設定ファイル
+# GA4やSearchConsoleなどのメトリクス設定を管理
+
+websites:
+  - name: "メインサイト"
+    # GA4とSearchConsole両方設定の例
+    metrics:
+      ga4:
+        propertyId: "123456789"
+      # SearchConsoleは今回は未実装のためコメントアウト
+      # searchConsole:
+      #   siteUrl: "https://example.com"
+  
+  - name: "ブログサイト" 
+    # GA4のみ設定の例（SearchConsoleなし）
+    metrics:
+      ga4:
+        propertyId: "987654321"
+  
+  - name: "ランディングページ"
+    # 別のGA4プロパティの例
+    metrics:
+      ga4:
+        propertyId: "555666777"
