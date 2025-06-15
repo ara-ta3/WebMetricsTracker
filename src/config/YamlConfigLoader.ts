@@ -11,8 +11,8 @@ export function loadWebsiteConfigs(): Config.Config<WebsiteConfig[]> {
     Config.string("CONFIG_FILE_PATH"),
     Config.withDefault("config/websites.yaml"),
     Config.mapAttempt((filePath) => fs.readFileSync(filePath, "utf8")),
-    Config.mapOrFail((yaml) => {
-      const parsed = parse(yaml) as WebsiteConfigFile;
+    Config.mapAttempt((yaml) => parse(yaml) as WebsiteConfigFile),
+    Config.mapOrFail((parsed) => {
       if (!parsed?.websites || !Array.isArray(parsed.websites)) {
         Either.left(
           new Error(
