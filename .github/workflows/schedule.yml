@@ -17,10 +17,11 @@ jobs:
           cache: "pnpm"
       - run: make install
       - run: echo "${{ secrets.SERVICE_ACCOUNT_KEY_BASE64_TEXT }}" | base64 --decode > ServiceAccountKey.json
+      - run: echo "${{ secrets.WEBSITES_CONFIG_BASE64 }}" | base64 --decode > config/websites.yaml
       - run: make run
         env:
           GA_KEYFILE: ServiceAccountKey.json
-          GA_PROPERTIES: ${{ secrets.GA_PROPERTIES }}
+          CONFIG_FILE_PATH: config/websites.yaml
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
       - name: Notify failure

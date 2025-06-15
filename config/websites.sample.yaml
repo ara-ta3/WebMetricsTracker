@@ -1,0 +1,9 @@
+websites:
+  - name: "メインサイト"
+    metrics:
+      ga4:
+        propertyId: 123456789
+  - name: "ブログサイト"
+    metrics:
+      ga4:
+        propertyId: 987654321

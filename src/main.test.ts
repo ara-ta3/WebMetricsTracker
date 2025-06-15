@@ -18,6 +18,7 @@ describe("main", () => {
     process.env.GA_KEYFILE = "dummy";
     process.env.SLACK_WEBHOOK = "dummy";
     process.env.SENTRY_DSN = "dummy";
+    process.env.CONFIG_FILE_PATH = "config/websites.yaml";
     const { container } = await import("./config/Container.js");
     const { TYPES } = await import("./config/Types.js");
 
@@ -28,7 +29,6 @@ describe("main", () => {
       .toConstantValue(new FailingCollector() as any);
     container.unbind(TYPES.ErrorReporter);
     container.bind(TYPES.ErrorReporter).toConstantValue(mockNotifier);
-    process.env.GA_PROPERTIES = "A";
     const exitMock = vi.spyOn(process, "exit").mockImplementation(() => void 0);
 
     await import("./main.js");
