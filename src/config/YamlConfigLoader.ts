@@ -1,4 +1,4 @@
-import { Config, Effect, Either, pipe } from "effect";
+import { Config, Either, pipe } from "effect";
 import { parse } from "yaml";
 import * as fs from "fs";
 import type {
