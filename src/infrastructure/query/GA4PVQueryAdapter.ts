@@ -1,5 +1,6 @@
 import { Effect } from "effect";
-import type { GA4Data } from "../../domain/GA4.js";
+import type { GA4WebsiteData } from "../../domain/GA4.js";
+import type { WebsiteConfig } from "../../domain/WebsiteConfig.js";
 import { BetaAnalyticsDataClient } from "@google-analytics/data";
 import { AnalyticsAdminServiceClient } from "@google-analytics/admin";
 import type { PVQuery } from "../../application/query/PVQuery.js";
@@ -20,18 +21,22 @@ export class Ga4PVQueryAdapter implements PVQuery {
     });
   }
 
-  getPV(properties: string[]): Effect.Effect<GA4Data[], Error> {
+  getPVByWebsites(websites: WebsiteConfig[]): Effect.Effect<GA4WebsiteData[], Error> {
+    const websitesWithGA4 = websites.filter((website) => website.metrics.ga4?.propertyId);
+    
     return Effect.all(
-      properties.map((id) =>
+      websitesWithGA4.map((website) =>
         Effect.promise(async () => {
-          const p = await this.admin.getProperty({ name: `properties/${id}` });
+          const propertyId = website.metrics.ga4!.propertyId;
+          const p = await this.admin.getProperty({ name: `properties/${propertyId}` });
           const r = await this.ga4.runReport({
-            property: `properties/${id}`,
+            property: `properties/${propertyId}`,
             dateRanges: [{ startDate: "yesterday", endDate: "yesterday" }],
             metrics: [{ name: "screenPageViews" }, { name: "activeUsers" }],
           });
           return {
-            property: p[0].displayName ?? id,
+            websiteName: website.name,
+            property: p[0].displayName ?? propertyId,
             pv: Number(r[0].rows?.[0]?.metricValues?.[0]?.value ?? "0"),
             activeUsers: Number(
               r[0].rows?.[0]?.metricValues?.[1]?.value ?? "0",

@@ -4,6 +4,7 @@ import { Effect, pipe } from "effect";
 import { GA4PVCollector } from "./GA4PVCollector.js";
 import { MockPVQuery } from "./query/PVQuery.mock.js";
 import { MockSlackCommand } from "./command/SlackCommand.mock.js";
+import type { WebsiteConfig } from "../domain/WebsiteConfig.js";
 
 describe("GA4PVCollector", () => {
   it("collectAndNotify", async () => {
@@ -11,8 +12,29 @@ describe("GA4PVCollector", () => {
     const mockSlack = new MockSlackCommand();
     const collector = new GA4PVCollector(mockPv, mockSlack);
 
+    const testWebsites: WebsiteConfig[] = [
+      {
+        name: "Test Site A",
+        metrics: {
+          ga4: { propertyId: "A" }
+        }
+      },
+      {
+        name: "Test Site B", 
+        metrics: {
+          ga4: { propertyId: "B" }
+        }
+      },
+      {
+        name: "Test Site C",
+        metrics: {
+          ga4: { propertyId: "C" }
+        }
+      }
+    ];
+
     await pipe(
-      collector.collectAndNotifyPV(["A", "B", "C"]),
+      collector.collectAndNotifyPV(testWebsites),
       Effect.runPromise,
     );
 

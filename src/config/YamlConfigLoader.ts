@@ -25,8 +25,3 @@ export function loadWebsiteConfigs(): Config.Config<WebsiteConfig[]> {
   );
 }
 
-export function extractGA4PropertyIds(websites: WebsiteConfig[]): string[] {
-  return websites
-    .filter((website) => website.metrics.ga4?.propertyId)
-    .map((website) => website.metrics.ga4!.propertyId);
-}

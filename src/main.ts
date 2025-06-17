@@ -1,22 +1,15 @@
-import { Config, Effect, pipe } from "effect";
+import { Effect, pipe } from "effect";
 import { GA4PVCollector } from "./application/GA4PVCollector.js";
 import type { ErrorReporter } from "./application/ErrorReporter.js";
 import { TYPES } from "./config/Types.js";
 import { container } from "./config/Container.js";
-import {
-  loadWebsiteConfigs,
-  extractGA4PropertyIds,
-} from "./config/YamlConfigLoader.js";
-
-function propeties(): Config.Config<string[]> {
-  return pipe(loadWebsiteConfigs(), Config.map(extractGA4PropertyIds));
-}
+import { loadWebsiteConfigs } from "./config/YamlConfigLoader.js";
 
 export async function main(): Promise<void> {
   const collector = container.get<GA4PVCollector>(TYPES.GA4PVCollector);
   await pipe(
-    propeties(),
-    Effect.flatMap((propertyIds) => collector.collectAndNotifyPV(propertyIds)),
+    loadWebsiteConfigs(),
+    Effect.flatMap((websites) => collector.collectAndNotifyPV(websites)),
     Effect.runPromise,
   );
 }
