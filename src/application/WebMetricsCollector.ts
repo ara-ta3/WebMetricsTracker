@@ -16,7 +16,9 @@ export class WebMetricsCollector {
     public readonly slackCommand: SlackCommand,
   ) {}
 
-  public collectAndNotify(websites: WebsiteConfig[]): Effect.Effect<void, Error> {
+  public collectAndNotify(
+    websites: WebsiteConfig[],
+  ): Effect.Effect<void, Error> {
     return pipe(
       this.pvQuery.getPVByWebsites(websites),
       Effect.map((pvs) => from(pvs)),

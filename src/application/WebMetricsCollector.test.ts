@@ -16,27 +16,24 @@ describe("WebMetricsCollector", () => {
       {
         name: "Test Site A",
         metrics: {
-          ga4: { propertyId: "A" }
-        }
+          ga4: { propertyId: "A" },
+        },
       },
       {
-        name: "Test Site B", 
+        name: "Test Site B",
         metrics: {
-          ga4: { propertyId: "B" }
-        }
+          ga4: { propertyId: "B" },
+        },
       },
       {
         name: "Test Site C",
         metrics: {
-          ga4: { propertyId: "C" }
-        }
-      }
+          ga4: { propertyId: "C" },
+        },
+      },
     ];
 
-    await pipe(
-      collector.collectAndNotify(testWebsites),
-      Effect.runPromise,
-    );
+    await pipe(collector.collectAndNotify(testWebsites), Effect.runPromise);
 
     expect(mockSlack.messages.length).toBe(1);
   });

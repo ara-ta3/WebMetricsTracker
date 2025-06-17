@@ -6,7 +6,9 @@ import { container } from "./config/Container.js";
 import { loadWebsiteConfigs } from "./config/YamlConfigLoader.js";
 
 export async function main(): Promise<void> {
-  const collector = container.get<WebMetricsCollector>(TYPES.WebMetricsCollector);
+  const collector = container.get<WebMetricsCollector>(
+    TYPES.WebMetricsCollector,
+  );
   await pipe(
     loadWebsiteConfigs(),
     Effect.flatMap((websites) => collector.collectAndNotify(websites)),

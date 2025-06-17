@@ -24,4 +24,3 @@ export function loadWebsiteConfigs(): Config.Config<WebsiteConfig[]> {
     }),
   );
 }
-

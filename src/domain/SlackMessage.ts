@@ -30,7 +30,7 @@ export function from(ga4s: GA4WebsiteData[]): SlackMessage {
     text: "📊 GA4データレポート（WebSite別）",
     emoji: true,
   };
-  
+
   const data: SlackBlock[] = ga4s.flatMap((data) => {
     return [
       {
@@ -65,7 +65,7 @@ export function from(ga4s: GA4WebsiteData[]): SlackMessage {
       },
     ];
   });
-  
+
   return {
     blocks: [{ type: "header", text: header }, ...data],
   };

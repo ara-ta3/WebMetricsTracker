@@ -21,14 +21,20 @@ export class Ga4PVQueryAdapter implements PVQuery {
     });
   }
 
-  getPVByWebsites(websites: WebsiteConfig[]): Effect.Effect<GA4WebsiteData[], Error> {
-    const websitesWithGA4 = websites.filter((website) => website.metrics.ga4?.propertyId);
-    
+  getPVByWebsites(
+    websites: WebsiteConfig[],
+  ): Effect.Effect<GA4WebsiteData[], Error> {
+    const websitesWithGA4 = websites.filter(
+      (website) => website.metrics.ga4?.propertyId,
+    );
+
     return Effect.all(
       websitesWithGA4.map((website) =>
         Effect.promise(async () => {
           const propertyId = website.metrics.ga4!.propertyId;
-          const p = await this.admin.getProperty({ name: `properties/${propertyId}` });
+          const p = await this.admin.getProperty({
+            name: `properties/${propertyId}`,
+          });
           const r = await this.ga4.runReport({
             property: `properties/${propertyId}`,
             dateRanges: [{ startDate: "yesterday", endDate: "yesterday" }],
