@@ -6,7 +6,7 @@ import type { SlackCommand } from "../application/command/SlackCommand.js";
 import { SlackCommandAdapter } from "../infrastructure/command/SlackCommandAdapter.js";
 import { envConfig } from "./EnvConfig.js";
 import { TYPES } from "./Types.js";
-import { GA4PVCollector } from "../application/GA4PVCollector.js";
+import { WebMetricsCollector } from "../application/WebMetricsCollector.js";
 import type { ErrorReporter } from "../application/ErrorReporter.js";
 import { SentryErrorReporter } from "../infrastructure/error/SentryErrorReporter.js";
 
@@ -32,8 +32,8 @@ container
   .inSingletonScope();
 
 container
-  .bind<GA4PVCollector>(TYPES.GA4PVCollector)
-  .to(GA4PVCollector)
+  .bind<WebMetricsCollector>(TYPES.WebMetricsCollector)
+  .to(WebMetricsCollector)
   .inSingletonScope();
 
 container

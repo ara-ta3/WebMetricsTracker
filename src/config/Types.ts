@@ -6,6 +6,6 @@ export const TYPES = {
   },
   PVQuery: Symbol.for("PQuery"),
   SlackCommand: Symbol.for("SlackCommand"),
-  GA4PVCollector: Symbol.for("GA4PVCollector"),
+  WebMetricsCollector: Symbol.for("WebMetricsCollector"),
   ErrorReporter: Symbol.for("ErrorReporter"),
 };

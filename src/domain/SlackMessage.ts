@@ -1,4 +1,4 @@
-import type { GA4Data } from "./GA4.js";
+import type { GA4WebsiteData } from "./GA4.js";
 
 export type SlackPlainText = {
   type: "plain_text";
@@ -24,19 +24,27 @@ export interface SlackMessage {
   blocks: SlackBlock[];
 }
 
-export function from(ga4s: GA4Data[]): SlackMessage {
+export function from(ga4s: GA4WebsiteData[]): SlackMessage {
   const header: SlackPlainText = {
     type: "plain_text",
-    text: "📊 GA4データレポート",
+    text: "📊 GA4データレポート（WebSite別）",
     emoji: true,
   };
+
   const data: SlackBlock[] = ga4s.flatMap((data) => {
     return [
       {
         type: "section",
         text: {
           type: "mrkdwn",
-          text: `*${data.property}*`,
+          text: `*🌐 ${data.websiteName}*`,
+        },
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `Property: ${data.property}`,
         },
       },
       {
@@ -57,6 +65,7 @@ export function from(ga4s: GA4Data[]): SlackMessage {
       },
     ];
   });
+
   return {
     blocks: [{ type: "header", text: header }, ...data],
   };

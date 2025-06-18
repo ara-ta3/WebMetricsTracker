@@ -1,6 +1,9 @@
 import type { Effect } from "effect";
-import type { GA4Data } from "../../domain/GA4.js";
+import type { GA4WebsiteData } from "../../domain/GA4.js";
+import type { WebsiteConfig } from "../../domain/WebsiteConfig.js";
 
 export interface PVQuery {
-  getPV(propeties: string[]): Effect.Effect<GA4Data[], Error>;
+  getPVByWebsites(
+    websites: WebsiteConfig[],
+  ): Effect.Effect<GA4WebsiteData[], Error>;
 }
