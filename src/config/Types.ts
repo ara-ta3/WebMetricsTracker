@@ -5,6 +5,7 @@ export const TYPES = {
     SentryDsn: Symbol.for("SentryDsn"),
   },
   PVQuery: Symbol.for("PQuery"),
+  SearchConsoleQuery: Symbol.for("SearchConsoleQuery"),
   SlackCommand: Symbol.for("SlackCommand"),
   WebMetricsCollector: Symbol.for("WebMetricsCollector"),
   ErrorReporter: Symbol.for("ErrorReporter"),
