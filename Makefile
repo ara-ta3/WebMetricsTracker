@@ -5,6 +5,9 @@ ACT=act
 install:
 	$(PNPM) install
 
+setup:
+	cp -f ./config/websites.sample.yaml ./config/websites.yaml
+
 tsc:
 	$(PNPM) exec tsc
 

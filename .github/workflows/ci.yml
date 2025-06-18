@@ -18,6 +18,7 @@ jobs:
           node-version: "22.x"
           cache: "pnpm"
       - run: make install
+      - run: make setup
       - run: make lint
       - run: make tsc
       - run: make test
