@@ -13,7 +13,7 @@ importers:
         version: 8.3.0
       '@google-analytics/data':
         specifier: ^5.1.0
-        version: 5.1.0
+        version: 5.2.0
       '@sentry/node':
         specifier: ^9.0.0
         version: 9.36.0
@@ -205,8 +205,8 @@ packages:
     resolution: {integrity: sha512-1U+BviC9d/guuFt3T89XH9RalljnWVU6zp7JL7s8kEQoPbrr0qg+oApmbEtellxU3KNM1UdzE9yAcMTK7vPaDQ==}
     engines: {node: '>=18'}
 
-  '@google-analytics/data@5.1.0':
-    resolution: {integrity: sha512-puPCfKzxAEiD38aIdJPld2GFpUFRZVPJs1TNd0Gght5FTX1ZRvCsc2njRHIktEz25hBgobQdMBVOySQAfL8mow==}
+  '@google-analytics/data@5.2.0':
+    resolution: {integrity: sha512-CNCLF0jAoVjrcUo7yjyYiwJPWJuf/PTQEj+7FAqR1TU9nU4vmYgB3fcrtIL+TEjN19aLZ6DIRLjY+zhymwTCZg==}
     engines: {node: '>=18'}
 
   '@grpc/grpc-js@1.13.4':
@@ -625,10 +625,6 @@ packages:
   '@types/estree@1.0.8':
     resolution: {integrity: sha512-dWHzHa2WqEXI/O1E9OjrocMTKJl2mSrEolh1Iomrv6U+JuNwaHXsXx9bLu5gG7BUWFIN0skIQJQ/L1rIex4X6w==}
 
-  '@types/long@5.0.0':
-    resolution: {integrity: sha512-eQs9RsucA/LNjnMoJvWG/nXa7Pot/RbBzilF/QRIU/xRl+0ApxrSUFsV5lmf01SvSlqMzJ7Zwxe440wmz2SJGA==}
-    deprecated: This is a stub types definition. long provides its own type definitions, so you do not need this installed.
-
   '@types/mysql@2.15.26':
     resolution: {integrity: sha512-DSLCOXhkvfS5WNNPbfn2KdICAmk8lLc+/PNvnPnF7gOdMZCxopXduqv0OQ13y/yA/zXTSikZZqVgybUxOEg6YQ==}
 
@@ -917,10 +913,6 @@ packages:
     resolution: {integrity: sha512-I8fTFXvIG8tYpiDxDXwCXoFsTVsvHJ2GA7DToH+eaRccU8r3nqPMFghVb2GdHSVcu4pq9ScRyB2S1BjO+vsa1Q==}
     engines: {node: '>=18'}
 
-  google-gax@5.0.1-rc.1:
-    resolution: {integrity: sha512-kz3HlvYvmQVBcam2C7FOphE6xrhjrlbKrRpNxvWYAmVHi+SCeMReWcKp64WJXNL7clSYAgYer3gCKVTTF/+wPA==}
-    engines: {node: '>=18'}
-
   google-logging-utils@1.1.1:
     resolution: {integrity: sha512-rcX58I7nqpu4mbKztFeOAObbomBbHU2oIb/d3tJfF3dizGSApqtSwYJigGCooHdnMyQBIw8BrWyK96w3YXgr6A==}
     engines: {node: '>=14'}
@@ -1096,17 +1088,9 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
 
-  proto3-json-serializer@3.0.0:
-    resolution: {integrity: sha512-mHPIc7zaJc26HMpgX5J7vXjliYv4Rnn5ICUyINudz76iY4zFMQHTaQXrTFn0EoHnRsLD6BE+OuHhQHFUU93I9A==}
-    engines: {node: '>=18'}
-
   proto3-json-serializer@3.0.1:
     resolution: {integrity: sha512-Rug90pDIefARAG9MgaFjd0yR/YP4bN3Fov00kckXMjTZa0x86c4WoWfCQFdSeWi9DvRXjhfLlPDIvODB5LOTfg==}
     engines: {node: '>=18'}
-
-  protobufjs@7.5.2:
-    resolution: {integrity: sha512-f2ls6rpO6G153Cy+o2XQ+Y0sARLOZ17+OGVLHrc3VUKcLHYKEKWbkSujdBWQXM7gKn5NTfp0XnRPZn1MIu8n9w==}
-    engines: {node: '>=12.0.0'}
 
   protobufjs@7.5.3:
     resolution: {integrity: sha512-sildjKwVqOI2kmFDiXQ6aEB0fjYTafpEvIBs8tOR8qI4spuL9OPROLVu2qZqi/xgCfsHIwVqlaF8JBjWFHnKbw==}
@@ -1430,9 +1414,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@google-analytics/data@5.1.0':
+  '@google-analytics/data@5.2.0':
     dependencies:
-      google-gax: 5.0.1-rc.1
+      google-gax: 5.0.1
     transitivePeerDependencies:
       - supports-color
 
@@ -1897,10 +1881,6 @@ snapshots:
 
   '@types/estree@1.0.8': {}
 
-  '@types/long@5.0.0':
-    dependencies:
-      long: 5.3.2
-
   '@types/mysql@2.15.26':
     dependencies:
       '@types/node': 22.16.3
@@ -2244,23 +2224,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  google-gax@5.0.1-rc.1:
-    dependencies:
-      '@grpc/grpc-js': 1.13.4
-      '@grpc/proto-loader': 0.7.15
-      '@types/long': 5.0.0
-      abort-controller: 3.0.0
-      duplexify: 4.1.3
-      google-auth-library: 10.1.0
-      google-logging-utils: 1.1.1
-      node-fetch: 3.3.2
-      object-hash: 3.0.0
-      proto3-json-serializer: 3.0.0
-      protobufjs: 7.5.2
-      retry-request: 8.0.0
-    transitivePeerDependencies:
-      - supports-color
-
   google-logging-utils@1.1.1: {}
 
   gopd@1.2.0: {}
@@ -2425,28 +2388,9 @@ snapshots:
 
   prettier@3.6.2: {}
 
-  proto3-json-serializer@3.0.0:
-    dependencies:
-      protobufjs: 7.5.2
-
   proto3-json-serializer@3.0.1:
     dependencies:
       protobufjs: 7.5.3
-
-  protobufjs@7.5.2:
-    dependencies:
-      '@protobufjs/aspromise': 1.1.2
-      '@protobufjs/base64': 1.1.2
-      '@protobufjs/codegen': 2.0.4
-      '@protobufjs/eventemitter': 1.1.0
-      '@protobufjs/fetch': 1.1.0
-      '@protobufjs/float': 1.0.2
-      '@protobufjs/inquire': 1.1.0
-      '@protobufjs/path': 1.1.2
-      '@protobufjs/pool': 1.1.0
-      '@protobufjs/utf8': 1.1.0
-      '@types/node': 22.16.3
-      long: 5.3.2
 
   protobufjs@7.5.3:
     dependencies:
