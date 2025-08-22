@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@google-analytics/admin':
-        specifier: ^8.2.0
-        version: 8.3.0
+        specifier: ^9.0.0
+        version: 9.0.0
       '@google-analytics/data':
         specifier: ^5.1.0
         version: 5.2.0
@@ -201,8 +201,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@google-analytics/admin@8.3.0':
-    resolution: {integrity: sha512-1U+BviC9d/guuFt3T89XH9RalljnWVU6zp7JL7s8kEQoPbrr0qg+oApmbEtellxU3KNM1UdzE9yAcMTK7vPaDQ==}
+  '@google-analytics/admin@9.0.0':
+    resolution: {integrity: sha512-22G8wiOhUb4arbqBRlyUwfEvw+x+gcLhqVkMBklKbYwEmzzOkhDXUAdf+NNReMf2GzuosHHTyP2pfkojQghiSA==}
     engines: {node: '>=18'}
 
   '@google-analytics/data@5.2.0':
@@ -1411,7 +1411,7 @@ snapshots:
   '@esbuild/win32-x64@0.25.5':
     optional: true
 
-  '@google-analytics/admin@8.3.0':
+  '@google-analytics/admin@9.0.0':
     dependencies:
       google-auth-library: 10.1.0
       google-gax: 5.0.1
