@@ -25,7 +25,7 @@ importers:
         version: 3.19.8
       inversify:
         specifier: ^7.5.1
-        version: 7.10.4(reflect-metadata@0.2.2)
+        version: 7.10.5(reflect-metadata@0.2.2)
       node-fetch:
         specifier: ^3.3.2
         version: 3.3.2
@@ -233,8 +233,8 @@ packages:
   '@inversifyjs/common@1.5.2':
     resolution: {integrity: sha512-WlzR9xGadABS9gtgZQ+luoZ8V6qm4Ii6RQfcfC9Ho2SOlE6ZuemFo7PKJvKI0ikm8cmKbU8hw5UK6E4qovH21w==}
 
-  '@inversifyjs/container@1.14.1':
-    resolution: {integrity: sha512-OFSlXXFgEk2zSV4ZCapJeVc0jtN+DxiXB1Szz2AManOFEhFc9uiUFBUJ8XxOy4SuIAYPNNLW55F6owm/birqvg==}
+  '@inversifyjs/container@1.14.2':
+    resolution: {integrity: sha512-t0pq2ECBEASy3Jw2ps+Q/usOW6wiPRjUeii3qjH4dtyZzF2y7DBlKoajo1wcIXice8EBjJmq+aLgDzu17Hjvkg==}
     peerDependencies:
       reflect-metadata: ~0.2.2
 
@@ -872,8 +872,8 @@ packages:
   inherits@2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
 
-  inversify@7.10.4:
-    resolution: {integrity: sha512-slBB4OeGHNR4yxAz/ChzFrFK9QKtZ+P+Ys0aYMv0nYc05eiB5hk1oqlHhgCZ13tiDj4806tF1LW3NQPcJjmipQ==}
+  inversify@7.10.5:
+    resolution: {integrity: sha512-Ob/OlxEmzWP3Jz+VdMEb0D33Avi7M3aFBCHufhjRgvt3Q2YIobQPoKfwHQQOIyqAy+y1AVkX+eFhhhafY/QGIQ==}
 
   is-fullwidth-code-point@3.0.0:
     resolution: {integrity: sha512-zymm5+u+sCsSWyD9qNaejV3DFvhCKclKdizYaJUuHA83RLjb7nSuGnddCHGv0hk+KY7BMAlsWeK4Ueg6EV6XQg==}
@@ -1310,7 +1310,7 @@ snapshots:
 
   '@inversifyjs/common@1.5.2': {}
 
-  '@inversifyjs/container@1.14.1(reflect-metadata@0.2.2)':
+  '@inversifyjs/container@1.14.2(reflect-metadata@0.2.2)':
     dependencies:
       '@inversifyjs/common': 1.5.2
       '@inversifyjs/core': 9.1.1(reflect-metadata@0.2.2)
@@ -2040,10 +2040,10 @@ snapshots:
 
   inherits@2.0.4: {}
 
-  inversify@7.10.4(reflect-metadata@0.2.2):
+  inversify@7.10.5(reflect-metadata@0.2.2):
     dependencies:
       '@inversifyjs/common': 1.5.2
-      '@inversifyjs/container': 1.14.1(reflect-metadata@0.2.2)
+      '@inversifyjs/container': 1.14.2(reflect-metadata@0.2.2)
       '@inversifyjs/core': 9.1.1(reflect-metadata@0.2.2)
     transitivePeerDependencies:
       - reflect-metadata
