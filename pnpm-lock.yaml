@@ -12,8 +12,8 @@ importers:
         specifier: ^9.0.0
         version: 9.1.0
       '@google-analytics/data':
-        specifier: ^5.1.0
-        version: 5.2.2
+        specifier: ^6.0.0
+        version: 6.0.0
       '@sentry/node':
         specifier: ^10.0.0
         version: 10.53.1
@@ -216,8 +216,8 @@ packages:
     resolution: {integrity: sha512-ctJlzax1aK/lNnNLdufBBriQdfglLZWcYzElJvwQvvIU6tDTWqnhpS3HrMLmFrmM/GeABjAhdGG7tF/FiOZmXw==}
     engines: {node: '>=18'}
 
-  '@google-analytics/data@5.2.2':
-    resolution: {integrity: sha512-W6p4Z8IG5Uol2x9NNYA1IfCGbAClyt/dGHv+d1KO8ML658hBq/RUPg4iXc3whdgiJIu6QkVGgcXUO65lkEiLnA==}
+  '@google-analytics/data@6.0.0':
+    resolution: {integrity: sha512-+mDFFRDL5IhxZWzs9feQwfORw8WjRgewIjrOhk2dQNqjC1c6sEiyVXOMZE2s74MGQpPGxXJNhNTX6x7tzwKW6Q==}
     engines: {node: '>=18'}
 
   '@grpc/grpc-js@1.14.3':
@@ -1425,7 +1425,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@google-analytics/data@5.2.2':
+  '@google-analytics/data@6.0.0':
     dependencies:
       google-gax: 5.0.6
     transitivePeerDependencies:

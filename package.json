@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@google-analytics/admin": "^9.0.0",
-    "@google-analytics/data": "^5.1.0",
+    "@google-analytics/data": "^6.0.0",
     "dotenv": "^17.0.0",
     "effect": "^3.15.4",
     "inversify": "^8.0.0",
