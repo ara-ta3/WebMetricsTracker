@@ -90,6 +90,13 @@ function metricLine(
     : `${value} ${trend(current, previous)}`;
 }
 
+function lastYearLine(period: GA4PeriodMetrics | null): string {
+  if (period === null || period.metrics === null) {
+    return `前年 ${NO_DATA}`;
+  }
+  return `前年 ${formatNumber(period.metrics.pv)} / ${formatNumber(period.metrics.activeUsers)}`;
+}
+
 function periodField(
   title: string,
   period: GA4PeriodMetrics | null,
@@ -107,30 +114,13 @@ function periodField(
         period.metrics.activeUsers,
         lastYear?.metrics?.activeUsers,
       ),
+      lastYearLine(lastYear),
     ].join("\n"),
   );
 }
 
-function lastYearNote(
-  label: string,
-  period: GA4PeriodMetrics | null,
-): string | null {
-  if (period === null) {
-    return null;
-  }
-  const range =
-    period.metrics === null
-      ? NO_DATA
-      : `PV ${formatNumber(period.metrics.pv)} / UU ${formatNumber(period.metrics.activeUsers)}`;
-  return `${label} ${range}`;
-}
-
 function websiteBlocks(data: GA4WebsiteData, yesterday: string): SlackBlock[] {
   const { monthly } = data;
-  const notes = [
-    lastYearNote("今月", monthly.currentMonthLastYear),
-    lastYearNote("先月", monthly.lastMonthLastYear),
-  ].filter((note): note is string => note !== null);
 
   return [
     {
@@ -152,7 +142,6 @@ function websiteBlocks(data: GA4WebsiteData, yesterday: string): SlackBlock[] {
     context(
       [
         `📅 うち昨日 ${shortDate(yesterday)} PV ${formatNumber(data.pv)} / UU ${formatNumber(data.activeUsers)}`,
-        `📈 前年同期 ${notes.length === 0 ? NO_DATA : notes.join(" ・ ")}`,
         `🔖 ${data.property}`,
       ].join("\n"),
     ),
@@ -184,7 +173,7 @@ export function from(
     blocks: [
       header,
       context(
-        `🗓️ ${longDate(yesterday)} までの確定データ ・ 🔼🔽 は前年同期比（PV＝表示回数 / UU＝アクティブユーザ）`,
+        `🗓️ ${longDate(yesterday)} までの確定データ ・ 🔼🔽 は前年同期比 ・ 前年 は前年同期の PV / UU（PV＝表示回数 / UU＝アクティブユーザ）`,
       ),
       divider(),
       ...ga4s.flatMap((data) => websiteBlocks(data, yesterday)),

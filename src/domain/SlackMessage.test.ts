@@ -52,7 +52,8 @@ describe("SlackMessage.from", () => {
     const text = json([fullData]);
     expect(text).toContain("🔼 +20.0%"); // 今月PV 1200 vs 1000
     expect(text).toContain("🔽 -25.0%"); // 今月UU 600 vs 800
-    expect(text).toContain("前年同期 今月 PV 1,000 / UU 800");
+    expect(text).toContain("前年 1,000 / 800"); // 今月の前年実数は同じfield内
+    expect(text).toContain("前年 2,500 / 1,000"); // 先月の前年実数
   });
 
   it("データがない期間はデータなしと表示する", () => {
@@ -74,7 +75,7 @@ describe("SlackMessage.from", () => {
 
     const text = json([data]);
     expect(text).toContain("*今月*\\nデータなし");
-    expect(text).toContain("先月 データなし");
+    expect(text).toContain("前年 データなし");
   });
 
   it("対象サイトが無い場合もメッセージを組み立てる", () => {
