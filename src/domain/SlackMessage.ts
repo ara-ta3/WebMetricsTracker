@@ -49,10 +49,18 @@ function shortDate(date: string): string {
   return `${Number(month)}/${Number(day)}`;
 }
 
-/** "2026-07-01" -> "2026年7月" */
-function monthLabel(date: string): string {
-  const [year, month] = date.split("-");
-  return `${year}年${Number(month)}月`;
+/** "2026-08-22" -> "2026/8/22" */
+function longDate(date: string): string {
+  const [year] = date.split("-");
+  return `${year}/${shortDate(date)}`;
+}
+
+/** "今月 8/1〜8/22" のような期間ラベル */
+function periodTitle(label: string, period: GA4PeriodMetrics | null): string {
+  if (period === null) {
+    return label;
+  }
+  return `${label} ${shortDate(period.range.startDate)}〜${shortDate(period.range.endDate)}`;
 }
 
 function trend(current: number, previous: number): string {
@@ -119,11 +127,6 @@ function lastYearNote(
 
 function websiteBlocks(data: GA4WebsiteData, yesterday: string): SlackBlock[] {
   const { monthly } = data;
-  const currentMonthTitle =
-    monthly.currentMonth === null
-      ? "今月"
-      : `今月 ${shortDate(monthly.currentMonth.range.startDate)}〜${shortDate(monthly.currentMonth.range.endDate)}`;
-
   const notes = [
     lastYearNote("今月", monthly.currentMonthLastYear),
     lastYearNote("先月", monthly.lastMonthLastYear),
@@ -134,20 +137,13 @@ function websiteBlocks(data: GA4WebsiteData, yesterday: string): SlackBlock[] {
       type: "section",
       text: mrkdwn(`*🌐 ${data.websiteName}*`),
       fields: [
-        mrkdwn(
-          [
-            `*昨日 ${shortDate(yesterday)}*`,
-            `PV \`${formatNumber(data.pv)}\``,
-            `UU \`${formatNumber(data.activeUsers)}\``,
-          ].join("\n"),
-        ),
         periodField(
-          currentMonthTitle,
+          periodTitle("今月", monthly.currentMonth),
           monthly.currentMonth,
           monthly.currentMonthLastYear,
         ),
         periodField(
-          `先月 ${monthLabel(monthly.lastMonth.range.startDate)}`,
+          periodTitle("先月", monthly.lastMonth),
           monthly.lastMonth,
           monthly.lastMonthLastYear,
         ),
@@ -155,6 +151,7 @@ function websiteBlocks(data: GA4WebsiteData, yesterday: string): SlackBlock[] {
     },
     context(
       [
+        `📅 うち昨日 ${shortDate(yesterday)} PV ${formatNumber(data.pv)} / UU ${formatNumber(data.activeUsers)}`,
         `📈 前年同期 ${notes.length === 0 ? NO_DATA : notes.join(" ・ ")}`,
         `🔖 ${data.property}`,
       ].join("\n"),
@@ -187,7 +184,7 @@ export function from(
     blocks: [
       header,
       context(
-        `🗓️ ${yesterday} までの確定データ ・ 🔼🔽 は前年同期比（PV＝表示回数 / UU＝アクティブユーザ）`,
+        `🗓️ ${longDate(yesterday)} までの確定データ ・ 🔼🔽 は前年同期比（PV＝表示回数 / UU＝アクティブユーザ）`,
       ),
       divider(),
       ...ga4s.flatMap((data) => websiteBlocks(data, yesterday)),
