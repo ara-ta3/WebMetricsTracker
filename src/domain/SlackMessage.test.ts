@@ -103,9 +103,11 @@ describe("SlackMessage.from", () => {
   it("流入チャネルを今月・先月別に上位3件で表示する", () => {
     const text = json([fullData]);
     expect(text).toContain(
-      "今月の流入 Organic Search 60% ・ Direct 30% ・ Referral 10%",
+      "今月の流入 Organic Search 600 (60%) ・ Direct 300 (30%) ・ Referral 100 (10%)",
     );
-    expect(text).toContain("先月の流入 Direct 50% ・ Organic Search 50%");
+    expect(text).toContain(
+      "先月の流入 Direct 500 (50%) ・ Organic Search 500 (50%)",
+    );
     expect(text).not.toContain("Organic Social");
   });
 

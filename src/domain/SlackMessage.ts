@@ -130,7 +130,7 @@ function periodField(
   );
 }
 
-/** "Organic Search 62% ・ Direct 21%" のような流入内訳 */
+/** "Organic Search 8,200 (62%) ・ Direct 2,800 (21%)" のような流入内訳 */
 function channelLine(label: string, channels: GA4ChannelMetrics[]): string {
   if (channels.length === 0) {
     return `🔗 ${label}の流入 ${NO_DATA}`;
@@ -140,7 +140,7 @@ function channelLine(label: string, channels: GA4ChannelMetrics[]): string {
     .slice(0, CHANNEL_TOP_N)
     .map((c) => {
       const share = total === 0 ? 0 : Math.round((c.sessions / total) * 100);
-      return `${c.channel} ${share}%`;
+      return `${c.channel} ${formatNumber(c.sessions)} (${share}%)`;
     })
     .join(" ・ ");
   return `🔗 ${label}の流入 ${top}`;
@@ -216,7 +216,7 @@ export function from(
     blocks: [
       header,
       context(
-        `🗓️ ${longDate(yesterday)} までの確定データ ・ 🔼🔽 は前年同期比 ・ 前年 は前年同期の PV / UU（PV＝表示回数 / UU＝アクティブユーザ / 🔗＝チャネル別セッション比率 / 🔎＝参照元/メディア別セッション数）`,
+        `🗓️ ${longDate(yesterday)} までの確定データ ・ 🔼🔽 は前年同期比 ・ 前年 は前年同期の PV / UU（PV＝表示回数 / UU＝アクティブユーザ / 🔗 ・ 🔎 はセッション数）`,
       ),
       divider(),
       ...ga4s.flatMap((data) => websiteBlocks(data, yesterday)),
