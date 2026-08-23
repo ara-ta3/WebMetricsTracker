@@ -26,6 +26,16 @@ const fullData: GA4WebsiteData = {
       range: { startDate: "2025-07-01", endDate: "2025-07-31" },
       metrics: { pv: 2500, activeUsers: 1000 },
     },
+    currentMonthChannels: [
+      { channel: "Organic Search", sessions: 600 },
+      { channel: "Direct", sessions: 300 },
+      { channel: "Referral", sessions: 100 },
+      { channel: "Organic Social", sessions: 0 },
+    ],
+    lastMonthChannels: [
+      { channel: "Direct", sessions: 500 },
+      { channel: "Organic Search", sessions: 500 },
+    ],
   },
 };
 
@@ -70,12 +80,24 @@ describe("SlackMessage.from", () => {
           range: { startDate: "2025-07-01", endDate: "2025-07-31" },
           metrics: null,
         },
+        currentMonthChannels: [],
+        lastMonthChannels: [],
       },
     };
 
     const text = json([data]);
     expect(text).toContain("*今月*\\nデータなし");
     expect(text).toContain("前年 データなし");
+    expect(text).toContain("今月の流入 データなし");
+  });
+
+  it("流入チャネルを今月・先月別に上位3件で表示する", () => {
+    const text = json([fullData]);
+    expect(text).toContain(
+      "今月の流入 Organic Search 60% ・ Direct 30% ・ Referral 10%",
+    );
+    expect(text).toContain("先月の流入 Direct 50% ・ Organic Search 50%");
+    expect(text).not.toContain("Organic Social");
   });
 
   it("対象サイトが無い場合もメッセージを組み立てる", () => {

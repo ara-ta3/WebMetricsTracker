@@ -1,5 +1,6 @@
 import { Effect } from "effect";
 import type {
+  GA4ChannelMetrics,
   GA4Metrics,
   GA4MonthlyMetrics,
   GA4PeriodMetrics,
@@ -47,6 +48,24 @@ export class Ga4PVQueryAdapter implements PVQuery {
     };
   }
 
+  /** チャネルグループ別のセッション数を上位順で取得する（比率算出のため全チャネル） */
+  private async fetchChannels(
+    propertyId: string,
+    range: DateRange,
+  ): Promise<GA4ChannelMetrics[]> {
+    const r = await this.ga4.runReport({
+      property: `properties/${propertyId}`,
+      dateRanges: [range],
+      dimensions: [{ name: "sessionDefaultChannelGroup" }],
+      metrics: [{ name: "sessions" }],
+      orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
+    });
+    return (r[0].rows ?? []).map((row) => ({
+      channel: row.dimensionValues?.[0]?.value ?? "(not set)",
+      sessions: Number(row.metricValues?.[0]?.value ?? "0"),
+    }));
+  }
+
   private async fetchPeriod(
     propertyId: string,
     range: DateRange,
@@ -62,22 +81,34 @@ export class Ga4PVQueryAdapter implements PVQuery {
     now: Date,
   ): Promise<GA4MonthlyMetrics> {
     const ranges = monthlyDateRanges(now);
-    const [currentMonth, currentMonthLastYear, lastMonth, lastMonthLastYear] =
-      await Promise.all([
-        ranges.currentMonth === null
-          ? Promise.resolve(null)
-          : this.fetchPeriod(propertyId, ranges.currentMonth),
-        ranges.currentMonthLastYear === null
-          ? Promise.resolve(null)
-          : this.fetchPeriod(propertyId, ranges.currentMonthLastYear),
-        this.fetchPeriod(propertyId, ranges.lastMonth),
-        this.fetchPeriod(propertyId, ranges.lastMonthLastYear),
-      ]);
+    const [
+      currentMonth,
+      currentMonthLastYear,
+      lastMonth,
+      lastMonthLastYear,
+      currentMonthChannels,
+      lastMonthChannels,
+    ] = await Promise.all([
+      ranges.currentMonth === null
+        ? Promise.resolve(null)
+        : this.fetchPeriod(propertyId, ranges.currentMonth),
+      ranges.currentMonthLastYear === null
+        ? Promise.resolve(null)
+        : this.fetchPeriod(propertyId, ranges.currentMonthLastYear),
+      this.fetchPeriod(propertyId, ranges.lastMonth),
+      this.fetchPeriod(propertyId, ranges.lastMonthLastYear),
+      ranges.currentMonth === null
+        ? Promise.resolve([])
+        : this.fetchChannels(propertyId, ranges.currentMonth),
+      this.fetchChannels(propertyId, ranges.lastMonth),
+    ]);
     return {
       currentMonth,
       currentMonthLastYear,
       lastMonth,
       lastMonthLastYear,
+      currentMonthChannels,
+      lastMonthChannels,
     };
   }
 
