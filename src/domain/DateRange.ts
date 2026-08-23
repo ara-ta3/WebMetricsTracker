@@ -35,6 +35,10 @@ export function todayInJst(now: Date): YearMonthDay {
   };
 }
 
+export function yesterdayInJst(now: Date): string {
+  return format(previousDay(todayInJst(now)));
+}
+
 function previousDay({ year, month, day }: YearMonthDay): YearMonthDay {
   const d = new Date(Date.UTC(year, month - 1, day - 1));
   return {
