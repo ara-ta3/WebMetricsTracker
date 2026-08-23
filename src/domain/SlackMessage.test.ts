@@ -36,6 +36,12 @@ const fullData: GA4WebsiteData = {
       { channel: "Direct", sessions: 500 },
       { channel: "Organic Search", sessions: 500 },
     ],
+    currentMonthSources: [
+      { source: "google", medium: "organic", sessions: 550 },
+      { source: "(direct)", medium: "(none)", sessions: 300 },
+      { source: "t.co", medium: "referral", sessions: 80 },
+    ],
+    lastMonthSources: [{ source: "google", medium: "organic", sessions: 480 }],
   },
 };
 
@@ -82,6 +88,8 @@ describe("SlackMessage.from", () => {
         },
         currentMonthChannels: [],
         lastMonthChannels: [],
+        currentMonthSources: [],
+        lastMonthSources: [],
       },
     };
 
@@ -89,6 +97,7 @@ describe("SlackMessage.from", () => {
     expect(text).toContain("*今月*\\nデータなし");
     expect(text).toContain("前年 データなし");
     expect(text).toContain("今月の流入 データなし");
+    expect(text).toContain("今月の詳細TOP5 データなし");
   });
 
   it("流入チャネルを今月・先月別に上位3件で表示する", () => {
@@ -98,6 +107,14 @@ describe("SlackMessage.from", () => {
     );
     expect(text).toContain("先月の流入 Direct 50% ・ Organic Search 50%");
     expect(text).not.toContain("Organic Social");
+  });
+
+  it("参照元/メディアの詳細を今月・先月別に表示する", () => {
+    const text = json([fullData]);
+    expect(text).toContain(
+      "今月の詳細TOP5 google/organic 550 ・ (direct)/(none) 300 ・ t.co/referral 80",
+    );
+    expect(text).toContain("先月の詳細TOP5 google/organic 480");
   });
 
   it("対象サイトが無い場合もメッセージを組み立てる", () => {

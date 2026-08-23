@@ -2,6 +2,7 @@ import { yesterdayInJst } from "./DateRange.js";
 import type {
   GA4ChannelMetrics,
   GA4PeriodMetrics,
+  GA4SourceMetrics,
   GA4WebsiteData,
 } from "./GA4.js";
 
@@ -33,6 +34,9 @@ const NO_DATA = "データなし";
 
 /** 流入チャネルの表示上限 */
 const CHANNEL_TOP_N = 3;
+
+/** 参照元/メディアの表示上限 */
+const SOURCE_TOP_N = 5;
 
 const mrkdwn = (text: string): SlackMrkdwnText => ({ type: "mrkdwn", text });
 
@@ -142,6 +146,18 @@ function channelLine(label: string, channels: GA4ChannelMetrics[]): string {
   return `🔗 ${label}の流入 ${top}`;
 }
 
+/** "google/organic 8,200 ・ (direct)/(none) 3,100" のような参照元内訳 */
+function sourceLine(label: string, sources: GA4SourceMetrics[]): string {
+  if (sources.length === 0) {
+    return `🔎 ${label}の詳細TOP${SOURCE_TOP_N} ${NO_DATA}`;
+  }
+  const top = sources
+    .slice(0, SOURCE_TOP_N)
+    .map((s) => `${s.source}/${s.medium} ${formatNumber(s.sessions)}`)
+    .join(" ・ ");
+  return `🔎 ${label}の詳細TOP${SOURCE_TOP_N} ${top}`;
+}
+
 function websiteBlocks(data: GA4WebsiteData, yesterday: string): SlackBlock[] {
   const { monthly } = data;
 
@@ -166,6 +182,8 @@ function websiteBlocks(data: GA4WebsiteData, yesterday: string): SlackBlock[] {
       [
         channelLine("今月", monthly.currentMonthChannels),
         channelLine("先月", monthly.lastMonthChannels),
+        sourceLine("今月", monthly.currentMonthSources),
+        sourceLine("先月", monthly.lastMonthSources),
         `📅 うち昨日 ${shortDate(yesterday)} PV ${formatNumber(data.pv)} / UU ${formatNumber(data.activeUsers)}`,
         `🔖 ${data.property}`,
       ].join("\n"),
@@ -198,7 +216,7 @@ export function from(
     blocks: [
       header,
       context(
-        `🗓️ ${longDate(yesterday)} までの確定データ ・ 🔼🔽 は前年同期比 ・ 前年 は前年同期の PV / UU（PV＝表示回数 / UU＝アクティブユーザ / 🔗＝チャネル別セッション比率）`,
+        `🗓️ ${longDate(yesterday)} までの確定データ ・ 🔼🔽 は前年同期比 ・ 前年 は前年同期の PV / UU（PV＝表示回数 / UU＝アクティブユーザ / 🔗＝チャネル別セッション比率 / 🔎＝参照元/メディア別セッション数）`,
       ),
       divider(),
       ...ga4s.flatMap((data) => websiteBlocks(data, yesterday)),

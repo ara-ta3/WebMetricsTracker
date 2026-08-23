@@ -34,6 +34,15 @@ export class MockPVQuery implements PVQuery {
         { channel: "Organic Search", sessions: this.samplePv * 8 },
         { channel: "Direct", sessions: this.samplePv * 2 },
       ],
+      currentMonthSources: [
+        { source: "google", medium: "organic", sessions: this.samplePv * 6 },
+        { source: "(direct)", medium: "(none)", sessions: this.samplePv * 2 },
+        { source: "t.co", medium: "referral", sessions: this.samplePv },
+      ],
+      lastMonthSources: [
+        { source: "google", medium: "organic", sessions: this.samplePv * 8 },
+        { source: "(direct)", medium: "(none)", sessions: this.samplePv * 2 },
+      ],
     };
   }
 

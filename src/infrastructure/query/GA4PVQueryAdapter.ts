@@ -4,6 +4,7 @@ import type {
   GA4Metrics,
   GA4MonthlyMetrics,
   GA4PeriodMetrics,
+  GA4SourceMetrics,
   GA4WebsiteData,
 } from "../../domain/GA4.js";
 import type { DateRange } from "../../domain/DateRange.js";
@@ -14,6 +15,9 @@ import { AnalyticsAdminServiceClient } from "@google-analytics/admin";
 import type { PVQuery } from "../../application/query/PVQuery.js";
 import { inject, injectable } from "inversify";
 import { TYPES } from "../../config/Types.js";
+
+/** 参照元/メディアの取得上限 */
+const SOURCE_LIMIT = 5;
 
 @injectable()
 export class Ga4PVQueryAdapter implements PVQuery {
@@ -66,6 +70,26 @@ export class Ga4PVQueryAdapter implements PVQuery {
     }));
   }
 
+  /** 参照元/参照メディア別のセッション数を上位順で取得する */
+  private async fetchSources(
+    propertyId: string,
+    range: DateRange,
+  ): Promise<GA4SourceMetrics[]> {
+    const r = await this.ga4.runReport({
+      property: `properties/${propertyId}`,
+      dateRanges: [range],
+      dimensions: [{ name: "sessionSource" }, { name: "sessionMedium" }],
+      metrics: [{ name: "sessions" }],
+      orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
+      limit: SOURCE_LIMIT,
+    });
+    return (r[0].rows ?? []).map((row) => ({
+      source: row.dimensionValues?.[0]?.value ?? "(not set)",
+      medium: row.dimensionValues?.[1]?.value ?? "(not set)",
+      sessions: Number(row.metricValues?.[0]?.value ?? "0"),
+    }));
+  }
+
   private async fetchPeriod(
     propertyId: string,
     range: DateRange,
@@ -88,6 +112,8 @@ export class Ga4PVQueryAdapter implements PVQuery {
       lastMonthLastYear,
       currentMonthChannels,
       lastMonthChannels,
+      currentMonthSources,
+      lastMonthSources,
     ] = await Promise.all([
       ranges.currentMonth === null
         ? Promise.resolve(null)
@@ -101,6 +127,10 @@ export class Ga4PVQueryAdapter implements PVQuery {
         ? Promise.resolve([])
         : this.fetchChannels(propertyId, ranges.currentMonth),
       this.fetchChannels(propertyId, ranges.lastMonth),
+      ranges.currentMonth === null
+        ? Promise.resolve([])
+        : this.fetchSources(propertyId, ranges.currentMonth),
+      this.fetchSources(propertyId, ranges.lastMonth),
     ]);
     return {
       currentMonth,
@@ -109,6 +139,8 @@ export class Ga4PVQueryAdapter implements PVQuery {
       lastMonthLastYear,
       currentMonthChannels,
       lastMonthChannels,
+      currentMonthSources,
+      lastMonthSources,
     };
   }
 
