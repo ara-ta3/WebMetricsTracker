@@ -1,3 +1,4 @@
+import { yesterdayInJst } from "./DateRange.js";
 import type { GA4PeriodMetrics, GA4WebsiteData } from "./GA4.js";
 
 export type SlackPlainText = {
@@ -26,121 +27,170 @@ export interface SlackMessage {
 
 const NO_DATA = "データなし";
 
+const mrkdwn = (text: string): SlackMrkdwnText => ({ type: "mrkdwn", text });
+
+const section = (text: string): SlackBlock => ({
+  type: "section",
+  text: mrkdwn(text),
+});
+
+const context = (text: string): SlackBlock => ({
+  type: "context",
+  elements: [mrkdwn(text)],
+});
+
+const divider = (): SlackBlock => ({ type: "divider" });
+
 const formatNumber = (value: number): string => value.toLocaleString("en-US");
 
-function formatDiff(current: number, previous: number): string {
-  if (previous === 0) {
-    return current === 0 ? "±0%" : "前年0のため比較不可";
-  }
-  const rate = ((current - previous) / previous) * 100;
-  const sign = rate > 0 ? "+" : "";
-  return `${sign}${rate.toFixed(1)}%`;
+/** "2026-08-22" -> "8/22" */
+function shortDate(date: string): string {
+  const [, month, day] = date.split("-");
+  return `${Number(month)}/${Number(day)}`;
 }
 
-function formatMetric(
+/** "2026-07-01" -> "2026年7月" */
+function monthLabel(date: string): string {
+  const [year, month] = date.split("-");
+  return `${year}年${Number(month)}月`;
+}
+
+function trend(current: number, previous: number): string {
+  if (previous === 0) {
+    return current === 0 ? "➖ ±0%" : "🆕 前年データなし";
+  }
+  const rate = ((current - previous) / previous) * 100;
+  if (Math.abs(rate) < 0.05) {
+    return "➖ ±0%";
+  }
+  const icon = rate > 0 ? "🔼" : "🔽";
+  const sign = rate > 0 ? "+" : "";
+  return `${icon} ${sign}${rate.toFixed(1)}%`;
+}
+
+function metricLine(
   label: string,
   current: number | undefined,
   previous: number | undefined,
-  hasLastYearPeriod: boolean,
 ): string {
   if (current === undefined) {
-    return `*${label}:* ${NO_DATA}`;
+    return `${label} ${NO_DATA}`;
   }
-  if (!hasLastYearPeriod) {
-    return `*${label}:* ${formatNumber(current)}`;
-  }
-  if (previous === undefined) {
-    return `*${label}:* ${formatNumber(current)} （前年同期: ${NO_DATA}）`;
-  }
-  return `*${label}:* ${formatNumber(current)} （前年同期: ${formatNumber(previous)} / ${formatDiff(current, previous)}）`;
+  const value = `${label} \`${formatNumber(current)}\``;
+  return previous === undefined
+    ? value
+    : `${value} ${trend(current, previous)}`;
 }
 
-function periodSection(
-  label: string,
+function periodField(
+  title: string,
   period: GA4PeriodMetrics | null,
   lastYear: GA4PeriodMetrics | null,
-): SlackBlock {
-  if (period === null) {
-    return {
-      type: "section",
-      text: { type: "mrkdwn", text: `*${label}:* ${NO_DATA}` },
-    };
+): SlackMrkdwnText {
+  if (period === null || period.metrics === null) {
+    return mrkdwn(`*${title}*\n${NO_DATA}`);
   }
-  const range = `${period.range.startDate} 〜 ${period.range.endDate}`;
-  const lines = [
-    `*${label}* (${range})`,
-    formatMetric(
-      "PV",
-      period.metrics?.pv,
-      lastYear?.metrics?.pv,
-      lastYear !== null,
-    ),
-    formatMetric(
-      "アクティブユーザ",
-      period.metrics?.activeUsers,
-      lastYear?.metrics?.activeUsers,
-      lastYear !== null,
-    ),
-  ];
-  return {
-    type: "section",
-    text: { type: "mrkdwn", text: lines.join("\n") },
-  };
+  return mrkdwn(
+    [
+      `*${title}*`,
+      metricLine("PV", period.metrics.pv, lastYear?.metrics?.pv),
+      metricLine(
+        "UU",
+        period.metrics.activeUsers,
+        lastYear?.metrics?.activeUsers,
+      ),
+    ].join("\n"),
+  );
 }
 
-export function from(ga4s: GA4WebsiteData[]): SlackMessage {
-  const header: SlackPlainText = {
-    type: "plain_text",
-    text: "📊 GA4データレポート（WebSite別）",
-    emoji: true,
+function lastYearNote(
+  label: string,
+  period: GA4PeriodMetrics | null,
+): string | null {
+  if (period === null) {
+    return null;
+  }
+  const range =
+    period.metrics === null
+      ? NO_DATA
+      : `PV ${formatNumber(period.metrics.pv)} / UU ${formatNumber(period.metrics.activeUsers)}`;
+  return `${label} ${range}`;
+}
+
+function websiteBlocks(data: GA4WebsiteData, yesterday: string): SlackBlock[] {
+  const { monthly } = data;
+  const currentMonthTitle =
+    monthly.currentMonth === null
+      ? "今月"
+      : `今月 ${shortDate(monthly.currentMonth.range.startDate)}〜${shortDate(monthly.currentMonth.range.endDate)}`;
+
+  const notes = [
+    lastYearNote("今月", monthly.currentMonthLastYear),
+    lastYearNote("先月", monthly.lastMonthLastYear),
+  ].filter((note): note is string => note !== null);
+
+  return [
+    {
+      type: "section",
+      text: mrkdwn(`*🌐 ${data.websiteName}*`),
+      fields: [
+        mrkdwn(
+          [
+            `*昨日 ${shortDate(yesterday)}*`,
+            `PV \`${formatNumber(data.pv)}\``,
+            `UU \`${formatNumber(data.activeUsers)}\``,
+          ].join("\n"),
+        ),
+        periodField(
+          currentMonthTitle,
+          monthly.currentMonth,
+          monthly.currentMonthLastYear,
+        ),
+        periodField(
+          `先月 ${monthLabel(monthly.lastMonth.range.startDate)}`,
+          monthly.lastMonth,
+          monthly.lastMonthLastYear,
+        ),
+      ],
+    },
+    context(
+      [
+        `📈 前年同期 ${notes.length === 0 ? NO_DATA : notes.join(" ・ ")}`,
+        `🔖 ${data.property}`,
+      ].join("\n"),
+    ),
+    divider(),
+  ];
+}
+
+export function from(
+  ga4s: GA4WebsiteData[],
+  now: Date = new Date(),
+): SlackMessage {
+  const yesterday = yesterdayInJst(now);
+  const header: SlackBlock = {
+    type: "header",
+    text: {
+      type: "plain_text",
+      text: "📊 サイト指標レポート",
+      emoji: true,
+    },
   };
 
-  const data: SlackBlock[] = ga4s.flatMap((data) => {
-    return [
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: `*🌐 ${data.websiteName}*`,
-        },
-      },
-      {
-        type: "section",
-        text: {
-          type: "mrkdwn",
-          text: `Property: ${data.property}`,
-        },
-      },
-      {
-        type: "section",
-        fields: [
-          {
-            type: "mrkdwn",
-            text: `*Daily PV:* ${formatNumber(data.pv)}`,
-          },
-          {
-            type: "mrkdwn",
-            text: `*DAU:* ${formatNumber(data.activeUsers)}`,
-          },
-        ],
-      },
-      periodSection(
-        "📅 今月（月初〜前日）",
-        data.monthly.currentMonth,
-        data.monthly.currentMonthLastYear,
-      ),
-      periodSection(
-        "🗓️ 先月",
-        data.monthly.lastMonth,
-        data.monthly.lastMonthLastYear,
-      ),
-      {
-        type: "divider",
-      },
-    ];
-  });
+  if (ga4s.length === 0) {
+    return {
+      blocks: [header, section(`対象サイトのデータが${NO_DATA}でした`)],
+    };
+  }
 
   return {
-    blocks: [{ type: "header", text: header }, ...data],
+    blocks: [
+      header,
+      context(
+        `🗓️ ${yesterday} までの確定データ ・ 🔼🔽 は前年同期比（PV＝表示回数 / UU＝アクティブユーザ）`,
+      ),
+      divider(),
+      ...ga4s.flatMap((data) => websiteBlocks(data, yesterday)),
+    ],
   };
 }
