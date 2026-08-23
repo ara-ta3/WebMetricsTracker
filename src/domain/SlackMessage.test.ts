@@ -33,25 +33,27 @@ const json = (data: GA4WebsiteData[]): string =>
   JSON.stringify(from(data, NOW).blocks);
 
 describe("SlackMessage.from", () => {
-  it("header / context / fields を使って各期間を並べる", () => {
+  it("今月・先月を主軸にして昨日はcontextに退避する", () => {
     const blocks = from([fullData], NOW).blocks;
 
     expect(blocks[0]?.type).toBe("header");
-    expect(blocks[1]?.type).toBe("context");
-    expect(blocks[1]?.elements?.[0]?.text).toContain("2026-08-22");
+    expect(blocks[1]?.elements?.[0]?.text).toContain("2026/8/22");
 
     const fields = blocks.find((b) => b.fields !== undefined)?.fields ?? [];
-    expect(fields.length).toBe(3);
-    expect(fields[0]?.text).toContain("昨日 8/22");
-    expect(fields[1]?.text).toContain("今月 8/1〜8/22");
-    expect(fields[2]?.text).toContain("先月 2026年7月");
+    expect(fields.length).toBe(2);
+    expect(fields[0]?.text).toContain("今月 8/1〜8/22");
+    expect(fields[1]?.text).toContain("先月 7/1〜7/31");
+
+    const note = blocks.filter((b) => b.type === "context")[1];
+    expect(note?.elements?.[0]?.text).toContain("うち昨日 8/22 PV 10 / UU 5");
   });
 
   it("前年同期比を増減の絵文字付きで表示する", () => {
     const text = json([fullData]);
     expect(text).toContain("🔼 +20.0%"); // 今月PV 1200 vs 1000
     expect(text).toContain("🔽 -25.0%"); // 今月UU 600 vs 800
-    expect(text).toContain("前年同期 今月 PV 1,000 / UU 800");
+    expect(text).toContain("前年 1,000 / 800"); // 今月の前年実数は同じfield内
+    expect(text).toContain("前年 2,500 / 1,000"); // 先月の前年実数
   });
 
   it("データがない期間はデータなしと表示する", () => {
@@ -73,7 +75,7 @@ describe("SlackMessage.from", () => {
 
     const text = json([data]);
     expect(text).toContain("*今月*\\nデータなし");
-    expect(text).toContain("先月 データなし");
+    expect(text).toContain("前年 データなし");
   });
 
   it("対象サイトが無い場合もメッセージを組み立てる", () => {
