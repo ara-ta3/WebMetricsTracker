@@ -1,10 +1,31 @@
 import { Effect } from "effect";
 import type { PVQuery } from "../query/PVQuery.js";
-import type { GA4WebsiteData } from "../../domain/GA4.js";
+import type { GA4MonthlyMetrics, GA4WebsiteData } from "../../domain/GA4.js";
+import { monthlyDateRanges } from "../../domain/DateRange.js";
 import type { WebsiteConfig } from "../../domain/WebsiteConfig.js";
 
 export class MockPVQuery implements PVQuery {
   constructor(private readonly samplePv: number = 100) {}
+
+  private monthly(): GA4MonthlyMetrics {
+    const ranges = monthlyDateRanges(new Date());
+    const metrics = {
+      pv: this.samplePv * 30,
+      activeUsers: (this.samplePv / 2) * 30,
+    };
+    return {
+      currentMonth:
+        ranges.currentMonth === null
+          ? null
+          : { range: ranges.currentMonth, metrics },
+      currentMonthLastYear:
+        ranges.currentMonthLastYear === null
+          ? null
+          : { range: ranges.currentMonthLastYear, metrics },
+      lastMonth: { range: ranges.lastMonth, metrics },
+      lastMonthLastYear: { range: ranges.lastMonthLastYear, metrics: null },
+    };
+  }
 
   getPVByWebsites(
     websites: WebsiteConfig[],
@@ -17,6 +38,7 @@ export class MockPVQuery implements PVQuery {
       property: website.metrics.ga4!.propertyId,
       pv: this.samplePv,
       activeUsers: this.samplePv / 2,
+      monthly: this.monthly(),
     }));
     return Effect.succeed(data);
   }
