@@ -24,6 +24,25 @@ export class MockPVQuery implements PVQuery {
           : { range: ranges.currentMonthLastYear, metrics },
       lastMonth: { range: ranges.lastMonth, metrics },
       lastMonthLastYear: { range: ranges.lastMonthLastYear, metrics: null },
+      currentMonthChannels: [
+        { channel: "Organic Search", sessions: this.samplePv * 6 },
+        { channel: "Direct", sessions: this.samplePv * 2 },
+        { channel: "Referral", sessions: this.samplePv },
+        { channel: "Organic Social", sessions: this.samplePv / 2 },
+      ],
+      lastMonthChannels: [
+        { channel: "Organic Search", sessions: this.samplePv * 8 },
+        { channel: "Direct", sessions: this.samplePv * 2 },
+      ],
+      currentMonthSources: [
+        { source: "google", medium: "organic", sessions: this.samplePv * 6 },
+        { source: "(direct)", medium: "(none)", sessions: this.samplePv * 2 },
+        { source: "t.co", medium: "referral", sessions: this.samplePv },
+      ],
+      lastMonthSources: [
+        { source: "google", medium: "organic", sessions: this.samplePv * 8 },
+        { source: "(direct)", medium: "(none)", sessions: this.samplePv * 2 },
+      ],
     };
   }
 

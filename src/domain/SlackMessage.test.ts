@@ -26,6 +26,22 @@ const fullData: GA4WebsiteData = {
       range: { startDate: "2025-07-01", endDate: "2025-07-31" },
       metrics: { pv: 2500, activeUsers: 1000 },
     },
+    currentMonthChannels: [
+      { channel: "Organic Search", sessions: 600 },
+      { channel: "Direct", sessions: 300 },
+      { channel: "Referral", sessions: 100 },
+      { channel: "Organic Social", sessions: 0 },
+    ],
+    lastMonthChannels: [
+      { channel: "Direct", sessions: 500 },
+      { channel: "Organic Search", sessions: 500 },
+    ],
+    currentMonthSources: [
+      { source: "google", medium: "organic", sessions: 550 },
+      { source: "(direct)", medium: "(none)", sessions: 300 },
+      { source: "t.co", medium: "referral", sessions: 80 },
+    ],
+    lastMonthSources: [{ source: "google", medium: "organic", sessions: 480 }],
   },
 };
 
@@ -70,12 +86,37 @@ describe("SlackMessage.from", () => {
           range: { startDate: "2025-07-01", endDate: "2025-07-31" },
           metrics: null,
         },
+        currentMonthChannels: [],
+        lastMonthChannels: [],
+        currentMonthSources: [],
+        lastMonthSources: [],
       },
     };
 
     const text = json([data]);
     expect(text).toContain("*今月*\\nデータなし");
     expect(text).toContain("前年 データなし");
+    expect(text).toContain("今月の流入 データなし");
+    expect(text).toContain("今月の詳細TOP5 データなし");
+  });
+
+  it("流入チャネルを今月・先月別に上位3件で表示する", () => {
+    const text = json([fullData]);
+    expect(text).toContain(
+      "今月の流入 Organic Search 600 (60%) ・ Direct 300 (30%) ・ Referral 100 (10%)",
+    );
+    expect(text).toContain(
+      "先月の流入 Direct 500 (50%) ・ Organic Search 500 (50%)",
+    );
+    expect(text).not.toContain("Organic Social");
+  });
+
+  it("参照元/メディアの詳細を今月・先月別に表示する", () => {
+    const text = json([fullData]);
+    expect(text).toContain(
+      "今月の詳細TOP5 google/organic 550 ・ (direct)/(none) 300 ・ t.co/referral 80",
+    );
+    expect(text).toContain("先月の詳細TOP5 google/organic 480");
   });
 
   it("対象サイトが無い場合もメッセージを組み立てる", () => {
