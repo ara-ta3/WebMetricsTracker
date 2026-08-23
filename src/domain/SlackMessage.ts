@@ -84,7 +84,7 @@ function metricLine(
   if (current === undefined) {
     return `${label} ${NO_DATA}`;
   }
-  const value = `${label} \`${formatNumber(current)}\``;
+  const value = `${label} ${formatNumber(current)}`;
   return previous === undefined
     ? value
     : `${value} ${trend(current, previous)}`;
