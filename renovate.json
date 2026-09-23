@@ -3,5 +3,30 @@
   "extends": [
     "config:recommended"
   ],
-  "automerge": true
+  "automerge": true,
+  "packageRules": [
+    {
+      "matchManagers": ["npm"],
+      "minimumReleaseAge": "1 day"
+    },
+    {
+      "matchManagers": ["npm"],
+      "matchPackageNames": ["pnpm"],
+      "groupName": "pnpm"
+    },
+    {
+      "description": "pnpm のメジャー更新は設定移行（pnpm-workspace.yaml の allowBuilds など）を伴うため自動マージしない",
+      "matchManagers": ["npm"],
+      "matchPackageNames": ["pnpm"],
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    },
+    {
+      "description": "Node のバージョンは package.json の engines.node を単一の情報源とし、GitHub Actions は node-version-file 経由で読む",
+      "matchManagers": ["npm"],
+      "matchDepNames": ["node"],
+      "versioning": "node",
+      "groupName": "node version"
+    }
+  ]
 }
