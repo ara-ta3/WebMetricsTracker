@@ -171,7 +171,7 @@ importers:
         version: 10.1.0
       '@google-analytics/data':
         specifier: ^7.0.0
-        version: 7.1.0
+        version: 7.2.0
       '@sentry/node':
         specifier: ^10.0.0
         version: 10.75.3(@opentelemetry/core@2.11.0(@opentelemetry/api@1.9.1))
@@ -369,8 +369,8 @@ packages:
     resolution: {integrity: sha512-bTROqIJpPaXcf121XsGYs+vbg9LZQhpAjRbWdltaJHU8wlr4HJ7Lo+aZEJTMpLFuFylJKWb+A5P1NadAdscPcw==}
     engines: {node: '>=22'}
 
-  '@google-analytics/data@7.1.0':
-    resolution: {integrity: sha512-dgm59UCUCe/ixIOi9eNpwFPMhi/oim6yr7P225aYRsxaEc7lPvRkjRXZFcrUo9Sz9/CWXXp6/jZEoWy0d98CIg==}
+  '@google-analytics/data@7.2.0':
+    resolution: {integrity: sha512-jYm/I/Yj30x3QEuAoK4lZGmx8WDbAHHTMcFrBJB4L0QQyaK4HnV+m/Ew57HnqPfAx0WgHxX6FHUhdQtlj7GLdw==}
     engines: {node: '>=22'}
 
   '@grpc/grpc-js@1.14.4':
@@ -1481,7 +1481,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@google-analytics/data@7.1.0':
+  '@google-analytics/data@7.2.0':
     dependencies:
       google-gax: 6.0.0
     transitivePeerDependencies:
