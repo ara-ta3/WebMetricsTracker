@@ -177,7 +177,7 @@ importers:
         version: 10.75.2(@opentelemetry/core@2.11.0(@opentelemetry/api@1.9.1))
       dotenv:
         specifier: ^18.0.0
-        version: 18.0.2
+        version: 18.0.3
       effect:
         specifier: ^3.15.4
         version: 3.22.2
@@ -907,8 +907,8 @@ packages:
       supports-color:
         optional: true
 
-  dotenv@18.0.2:
-    resolution: {integrity: sha512-wl0U3CxC0iobaryqEKpFJxzyp4AxQFYAKj/WWszXZr87vVHLi2yJv2syax5Vxt+u02xqNgE277rsc3lOKg9sPg==}
+  dotenv@18.0.3:
+    resolution: {integrity: sha512-/8CJTyL817qPnfbQrJgOEcrU3fDrJkRIoXBE566wHuvIXKOCHUZhPqGPbCPi9SogjdGnreF0TlvnTgK6J/8zpA==}
     engines: {node: '>=12'}
     hasBin: true
 
@@ -1878,7 +1878,7 @@ snapshots:
     dependencies:
       ms: 2.1.3
 
-  dotenv@18.0.2: {}
+  dotenv@18.0.3: {}
 
   duplexify@4.1.3:
     dependencies:
