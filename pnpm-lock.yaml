@@ -171,7 +171,7 @@ importers:
         version: 10.1.1(supports-color@8.1.1)
       '@google-analytics/data':
         specifier: ^7.0.0
-        version: 7.2.0(supports-color@8.1.1)
+        version: 7.2.1(supports-color@8.1.1)
       '@sentry/node':
         specifier: ^11.0.0
         version: 11.1.0(@babel/core@7.29.7(supports-color@8.1.1))(rollup@4.63.1)
@@ -436,8 +436,8 @@ packages:
     resolution: {integrity: sha512-W1K3JbBOqFsBkq55TUWPUrjyyPWBBDzQbtHTpwls+v8D5pKtXZS+DdrSk2kIl6JR1gNom2uZ8f24MSaPI2M94g==}
     engines: {node: '>=22'}
 
-  '@google-analytics/data@7.2.0':
-    resolution: {integrity: sha512-jYm/I/Yj30x3QEuAoK4lZGmx8WDbAHHTMcFrBJB4L0QQyaK4HnV+m/Ew57HnqPfAx0WgHxX6FHUhdQtlj7GLdw==}
+  '@google-analytics/data@7.2.1':
+    resolution: {integrity: sha512-8B77oWryizGeV2DbK135TbBaWwkww154+XNEw7QbEa0UKtWqefOherFCvBAp4yOGtpPQG7ka00ESHPFg/DT28Q==}
     engines: {node: '>=22'}
 
   '@grpc/grpc-js@1.14.4':
@@ -1837,7 +1837,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@google-analytics/data@7.2.0(supports-color@8.1.1)':
+  '@google-analytics/data@7.2.1(supports-color@8.1.1)':
     dependencies:
       google-gax: 6.0.0(supports-color@8.1.1)
     transitivePeerDependencies:
