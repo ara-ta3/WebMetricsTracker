@@ -168,7 +168,7 @@ importers:
     dependencies:
       '@google-analytics/admin':
         specifier: ^10.0.0
-        version: 10.1.1(supports-color@8.1.1)
+        version: 10.2.0(supports-color@8.1.1)
       '@google-analytics/data':
         specifier: ^7.0.0
         version: 7.2.1(supports-color@8.1.1)
@@ -432,8 +432,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@google-analytics/admin@10.1.1':
-    resolution: {integrity: sha512-W1K3JbBOqFsBkq55TUWPUrjyyPWBBDzQbtHTpwls+v8D5pKtXZS+DdrSk2kIl6JR1gNom2uZ8f24MSaPI2M94g==}
+  '@google-analytics/admin@10.2.0':
+    resolution: {integrity: sha512-mX6wnzESNq4mjzYcVd3Y3+1iY3nLgDfPSHo7cEOZx5ZICYWVCKzoUyTMAhv0fOWtEJhA9WVkroT3LgbOdc6+tQ==}
     engines: {node: '>=22'}
 
   '@google-analytics/data@7.2.1':
@@ -1826,7 +1826,7 @@ snapshots:
   '@esbuild/win32-x64@0.27.7':
     optional: true
 
-  '@google-analytics/admin@10.1.1(supports-color@8.1.1)':
+  '@google-analytics/admin@10.2.0(supports-color@8.1.1)':
     dependencies:
       google-auth-library: 11.0.0(supports-color@8.1.1)
       google-gax: 6.0.0(supports-color@8.1.1)
