@@ -12,7 +12,7 @@ export class SlackCommandAdapter implements SlackCommand {
   ) {}
 
   postMessage(message: SlackMessage): Effect.Effect<void, Error> {
-    return Effect.try({
+    return Effect.tryPromise({
       try: async () => {
         const res = await fetch(this.webhookUrl, {
           method: "POST",
