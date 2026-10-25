@@ -24,7 +24,6 @@ jobs:
           GA_KEYFILE: ServiceAccountKey.json
           CONFIG_FILE_PATH: config/websites.yaml
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-          SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
       - name: Notify failure
         if: failure()
         env:

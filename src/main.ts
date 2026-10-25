@@ -1,6 +1,5 @@
 import { Effect, pipe } from "effect";
 import { WebMetricsCollector } from "./application/WebMetricsCollector.js";
-import type { ErrorReporter } from "./application/ErrorReporter.js";
 import { TYPES } from "./config/Types.js";
 import { container } from "./config/Container.js";
 import { loadWebsiteConfigs } from "./config/YamlConfigLoader.js";
@@ -16,9 +15,7 @@ export async function main(): Promise<void> {
   );
 }
 
-main().catch(async (err) => {
-  const notifier = container.get<ErrorReporter>(TYPES.ErrorReporter);
-  await Effect.runPromise(notifier.report(err));
+main().catch((err) => {
   console.error(err);
   process.exit(1);
 });
