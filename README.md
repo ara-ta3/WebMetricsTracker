@@ -1,6 +1,6 @@
 # WebMetricsTracker
 
-Google Analytics 4（GA4）から複数サイトのアクセス指標を取得し、毎朝 Slack にレポートを投稿するツールです。
+Google Analytics 4（GA4）から複数サイトのアクセス指標を取得し、Slack にレポートを投稿するツールです。
 
 ## Slack に届くレポートの例
 
@@ -33,8 +33,6 @@ UU 5,678 🔽 -3.8%           UU 7,000 🔽 -2.8%
 3. Slack Block Kit のメッセージを組み立て、Incoming Webhook で投稿する
 4. 失敗したときは Sentry にエラーを送る
 
-GitHub Actions の [Daily Run](.github/workflows/schedule.yml) が毎日 6:00（JST）に実行します。
-
 ## セットアップ
 
 ### 1. GA4 のサービスアカウントを用意する
@@ -66,7 +64,7 @@ websites:
 | `SENTRY_DSN`       | ○    | エラー送信先の Sentry DSN                                  |
 | `CONFIG_FILE_PATH` |      | サイト設定ファイルのパス（既定値: `config/websites.yaml`） |
 
-`.env` / `config/websites.yaml` / `ServiceAccountKey.json` は `.gitignore` 済みです。
+`.env` と `config/websites.yaml` は `.gitignore` 済みです。
 
 ## ローカルで動かす
 
@@ -92,19 +90,6 @@ make run       # ビルドして実行（Slack に投稿されます）
 - `application/`: ユースケースと外部サービスのインターフェイス
 - `infrastructure/`: GA4・Slack・Sentry との接続
 - `config/`: 環境変数・YAML の読み込みと DI コンテナ（Inversify）
-
-## GitHub Actions で定期実行する
-
-[schedule.yml](.github/workflows/schedule.yml) はリポジトリの Secrets から次の値を読みます。
-
-| Secret                            | 内容                                               |
-| --------------------------------- | -------------------------------------------------- |
-| `SERVICE_ACCOUNT_KEY_BASE64_TEXT` | サービスアカウントの JSON キーを base64 化したもの |
-| `WEBSITES_CONFIG_BASE64`          | `config/websites.yaml` を base64 化したもの        |
-| `SLACK_WEBHOOK`                   | Slack Incoming Webhook URL                         |
-| `SENTRY_DSN`                      | Sentry DSN                                         |
-
-実行に失敗すると、同じ Webhook に失敗通知が届きます。
 
 ## ライセンス
 
