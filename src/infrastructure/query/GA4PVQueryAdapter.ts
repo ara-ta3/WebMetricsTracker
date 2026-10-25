@@ -153,23 +153,26 @@ export class Ga4PVQueryAdapter implements PVQuery {
 
     return Effect.all(
       websitesWithGA4.map((website) =>
-        Effect.promise(async () => {
-          const propertyId = website.metrics.ga4!.propertyId;
-          const p = await this.admin.getProperty({
-            name: `properties/${propertyId}`,
-          });
-          const daily = await this.fetchMetrics(propertyId, {
-            startDate: "yesterday",
-            endDate: "yesterday",
-          });
-          const monthly = await this.fetchMonthly(propertyId, new Date());
-          return {
-            websiteName: website.name,
-            property: p[0].displayName ?? propertyId,
-            pv: daily?.pv ?? 0,
-            activeUsers: daily?.activeUsers ?? 0,
-            monthly,
-          };
+        Effect.tryPromise({
+          try: async () => {
+            const propertyId = website.metrics.ga4!.propertyId;
+            const p = await this.admin.getProperty({
+              name: `properties/${propertyId}`,
+            });
+            const daily = await this.fetchMetrics(propertyId, {
+              startDate: "yesterday",
+              endDate: "yesterday",
+            });
+            const monthly = await this.fetchMonthly(propertyId, new Date());
+            return {
+              websiteName: website.name,
+              property: p[0].displayName ?? propertyId,
+              pv: daily?.pv ?? 0,
+              activeUsers: daily?.activeUsers ?? 0,
+              monthly,
+            };
+          },
+          catch: (err) => (err instanceof Error ? err : new Error(String(err))),
         }),
       ),
     );
