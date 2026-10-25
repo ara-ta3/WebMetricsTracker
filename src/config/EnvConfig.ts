@@ -14,5 +14,4 @@ const c = new EnvConfig(process.env);
 export const envConfig = {
   GoogleKeyFilePath: c.get("GA_KEYFILE"),
   SlackWebhookUrl: c.get("SLACK_WEBHOOK"),
-  SentryDsn: c.get("SENTRY_DSN"),
 };

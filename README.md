@@ -31,7 +31,6 @@ UU 5,678 🔽 -3.8%           UU 7,000 🔽 -2.8%
 1. `config/websites.yaml` から対象サイトと GA4 プロパティ ID を読み込む
 2. GA4 Data API / Admin API で各サイトの指標を取得する
 3. Slack Block Kit のメッセージを組み立て、Incoming Webhook で投稿する
-4. 失敗したときは Sentry にエラーを送る
 
 ## セットアップ
 
@@ -61,7 +60,6 @@ websites:
 | ------------------ | ---- | ---------------------------------------------------------- |
 | `GA_KEYFILE`       | ○    | サービスアカウントの JSON キーのパス                       |
 | `SLACK_WEBHOOK`    | ○    | 投稿先の Slack Incoming Webhook URL                        |
-| `SENTRY_DSN`       | ○    | エラー送信先の Sentry DSN                                  |
 | `CONFIG_FILE_PATH` |      | サイト設定ファイルのパス（既定値: `config/websites.yaml`） |
 
 `.env` と `config/websites.yaml` は `.gitignore` 済みです。
@@ -88,7 +86,7 @@ make run       # ビルドして実行（Slack に投稿されます）
 
 - `domain/`: 期間計算や Slack メッセージの組み立てなどのロジック
 - `application/`: ユースケースと外部サービスのインターフェイス
-- `infrastructure/`: GA4・Slack・Sentry との接続
+- `infrastructure/`: GA4・Slack との接続
 - `config/`: 環境変数・YAML の読み込みと DI コンテナ（Inversify）
 
 ## ライセンス

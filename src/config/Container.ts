@@ -7,8 +7,6 @@ import { SlackCommandAdapter } from "../infrastructure/command/SlackCommandAdapt
 import { envConfig } from "./EnvConfig.js";
 import { TYPES } from "./Types.js";
 import { WebMetricsCollector } from "../application/WebMetricsCollector.js";
-import type { ErrorReporter } from "../application/ErrorReporter.js";
-import { SentryErrorReporter } from "../infrastructure/error/SentryErrorReporter.js";
 
 const container = new Container();
 
@@ -20,10 +18,6 @@ container
   .bind<string>(TYPES.config.SlackWebhookUrl)
   .toConstantValue(envConfig.SlackWebhookUrl);
 
-container
-  .bind<string>(TYPES.config.SentryDsn)
-  .toConstantValue(envConfig.SentryDsn);
-
 container.bind<PVQuery>(TYPES.PVQuery).to(Ga4PVQueryAdapter).inSingletonScope();
 
 container
@@ -34,11 +28,6 @@ container
 container
   .bind<WebMetricsCollector>(TYPES.WebMetricsCollector)
   .to(WebMetricsCollector)
-  .inSingletonScope();
-
-container
-  .bind<ErrorReporter>(TYPES.ErrorReporter)
-  .to(SentryErrorReporter)
   .inSingletonScope();
 
 export { container };
