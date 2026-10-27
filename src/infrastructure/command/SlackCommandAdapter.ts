@@ -5,6 +5,8 @@ import type { SlackMessage } from "../../domain/SlackMessage.js";
 import { inject, injectable } from "inversify";
 import { TYPES } from "../../config/Types.js";
 
+const MAX_BLOCKS_PER_MESSAGE = 50;
+
 @injectable()
 export class SlackCommandAdapter implements SlackCommand {
   constructor(
@@ -14,14 +16,25 @@ export class SlackCommandAdapter implements SlackCommand {
   postMessage(message: SlackMessage): Effect.Effect<void, Error> {
     return Effect.tryPromise({
       try: async () => {
-        const res = await fetch(this.webhookUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(message),
-        });
-        if (!res.ok) {
-          const body = await res.text();
-          throw new Error(`Slack API error ${res.status}: ${body}`);
+        for (
+          let offset = 0;
+          offset < message.blocks.length;
+          offset += MAX_BLOCKS_PER_MESSAGE
+        ) {
+          const res = await fetch(this.webhookUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              blocks: message.blocks.slice(
+                offset,
+                offset + MAX_BLOCKS_PER_MESSAGE,
+              ),
+            }),
+          });
+          if (!res.ok) {
+            const body = await res.text();
+            throw new Error(`Slack API error ${res.status}: ${body}`);
+          }
         }
       },
       catch: (err) => (err instanceof Error ? err : new Error(String(err))),

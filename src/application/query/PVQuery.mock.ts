@@ -39,6 +39,10 @@ export class MockPVQuery implements PVQuery {
         { source: "(direct)", medium: "(none)", sessions: this.samplePv * 2 },
         { source: "t.co", medium: "referral", sessions: this.samplePv },
       ],
+      currentMonthLandingPages: [],
+      lastMonthLandingPages: [],
+      currentMonthLandingPageSources: [],
+      lastMonthLandingPageSources: [],
       lastMonthSources: [
         { source: "google", medium: "organic", sessions: this.samplePv * 8 },
         { source: "(direct)", medium: "(none)", sessions: this.samplePv * 2 },
@@ -55,8 +59,13 @@ export class MockPVQuery implements PVQuery {
     const data: GA4WebsiteData[] = websitesWithGA4.map((website) => ({
       websiteName: website.name,
       property: website.metrics.ga4!.propertyId,
+      pages: [],
       pv: this.samplePv,
       activeUsers: this.samplePv / 2,
+      dailyChannels: [],
+      dailySources: [],
+      dailyLandingPages: [],
+      dailyLandingPageSources: [],
       monthly: this.monthly(),
     }));
     return Effect.succeed(data);
