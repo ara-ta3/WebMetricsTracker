@@ -1,7 +1,10 @@
 import { yesterdayInJst } from "./DateRange.js";
 import type {
   GA4ChannelMetrics,
+  GA4LandingPageMetrics,
+  GA4LandingPageSourceMetrics,
   GA4PeriodMetrics,
+  GA4PageDetails,
   GA4SourceMetrics,
   GA4WebsiteData,
 } from "./GA4.js";
@@ -147,19 +150,97 @@ function channelLine(label: string, channels: GA4ChannelMetrics[]): string {
 }
 
 /** "google/organic 8,200 ・ (direct)/(none) 3,100" のような参照元内訳 */
-function sourceLine(label: string, sources: GA4SourceMetrics[]): string {
+function sourceLine(
+  label: string,
+  sources: GA4SourceMetrics[],
+  topN: number = SOURCE_TOP_N,
+): string {
   if (sources.length === 0) {
-    return `🔎 ${label}の詳細TOP${SOURCE_TOP_N} ${NO_DATA}`;
+    return `🔎 ${label}の詳細TOP${topN} ${NO_DATA}`;
   }
   const top = sources
-    .slice(0, SOURCE_TOP_N)
+    .slice(0, topN)
     .map((s) => `${s.source}/${s.medium} ${formatNumber(s.sessions)}`)
     .join(" ・ ");
-  return `🔎 ${label}の詳細TOP${SOURCE_TOP_N} ${top}`;
+  return `🔎 ${label}の詳細TOP${topN} ${top}`;
+}
+
+const escapeMrkdwn = (value: string): string =>
+  value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;");
+
+const compactText = (value: string, maxLength: number): string => {
+  const text = value.replace(/\s+/g, " ").trim();
+  return text.length > maxLength ? `${text.slice(0, maxLength - 1)}…` : text;
+};
+
+function pageLink(path: string, pages: Map<string, GA4PageDetails>): string {
+  const page = pages.get(path);
+  const label = escapeMrkdwn(
+    `${compactText(path, 100)}${page?.title ? ` (${compactText(page.title, 100)})` : ""}`,
+  ).replaceAll("|", "｜");
+  if (!page) {
+    return label;
+  }
+  const link = `<${escapeMrkdwn(page.url).replaceAll("|", "%7C")}|${label}>`;
+  return link.length <= 2300 ? link : label;
+}
+
+function landingPageLines(
+  label: string,
+  pages: GA4LandingPageMetrics[],
+  sources: GA4LandingPageSourceMetrics[],
+  details: Map<string, GA4PageDetails>,
+): string[] {
+  const pageLines = pages
+    .slice(0, 3)
+    .map(
+      (page, index) =>
+        `${index + 1}. ${pageLink(page.landingPage, details)} — ${formatNumber(page.sessions)}`,
+    );
+  const sourceLines = sources
+    .slice(0, 3)
+    .map(
+      (source, index) =>
+        `${index + 1}. ${pageLink(source.landingPage, details)} × ${escapeMrkdwn(compactText(`${source.source}/${source.medium}`, 100))} — ${formatNumber(source.sessions)}`,
+    );
+  return [
+    `📄 ${label}のLP TOP3（セッション数）`,
+    ...(pageLines.length === 0 ? [NO_DATA] : pageLines),
+    `🔎 ${label}のLP×流入経路詳細 TOP3（セッション数）`,
+    ...(sourceLines.length === 0 ? [NO_DATA] : sourceLines),
+  ];
+}
+
+function rankingContexts(lines: string[]): SlackBlock[] {
+  const texts: string[] = [];
+  let text = "";
+  for (const line of lines) {
+    if (text.length + line.length + 1 > 3000) {
+      texts.push(text);
+      text = line;
+    } else {
+      text = text === "" ? line : `${text}\n${line}`;
+    }
+  }
+  if (text !== "") {
+    texts.push(text);
+  }
+  const blocks: SlackBlock[] = [];
+  for (let index = 0; index < texts.length; index += 10) {
+    blocks.push({
+      type: "context",
+      elements: texts.slice(index, index + 10).map(mrkdwn),
+    });
+  }
+  return blocks;
 }
 
 function websiteBlocks(data: GA4WebsiteData, yesterday: string): SlackBlock[] {
   const { monthly } = data;
+  const pages = new Map(data.pages.map((page) => [page.path, page]));
 
   return [
     {
@@ -185,9 +266,31 @@ function websiteBlocks(data: GA4WebsiteData, yesterday: string): SlackBlock[] {
         sourceLine("今月", monthly.currentMonthSources),
         sourceLine("先月", monthly.lastMonthSources),
         `📅 うち昨日 ${shortDate(yesterday)} PV ${formatNumber(data.pv)} / UU ${formatNumber(data.activeUsers)}`,
+        channelLine("昨日", data.dailyChannels),
+        sourceLine("昨日", data.dailySources, 3),
         `🔖 ${data.property}`,
       ].join("\n"),
     ),
+    ...rankingContexts([
+      ...landingPageLines(
+        "昨日",
+        data.dailyLandingPages,
+        data.dailyLandingPageSources,
+        pages,
+      ),
+      ...landingPageLines(
+        "今月",
+        monthly.currentMonthLandingPages,
+        monthly.currentMonthLandingPageSources,
+        pages,
+      ),
+      ...landingPageLines(
+        "先月",
+        monthly.lastMonthLandingPages,
+        monthly.lastMonthLandingPageSources,
+        pages,
+      ),
+    ]),
     divider(),
   ];
 }

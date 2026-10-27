@@ -23,6 +23,15 @@ export interface GA4SourceMetrics {
   sessions: number;
 }
 
+export interface GA4LandingPageMetrics {
+  landingPage: string;
+  sessions: number;
+}
+
+export interface GA4LandingPageSourceMetrics extends GA4SourceMetrics {
+  landingPage: string;
+}
+
 export interface GA4MonthlyMetrics {
   currentMonth: GA4PeriodMetrics | null;
   currentMonthLastYear: GA4PeriodMetrics | null;
@@ -32,12 +41,27 @@ export interface GA4MonthlyMetrics {
   lastMonthChannels: GA4ChannelMetrics[];
   currentMonthSources: GA4SourceMetrics[];
   lastMonthSources: GA4SourceMetrics[];
+  currentMonthLandingPages: GA4LandingPageMetrics[];
+  lastMonthLandingPages: GA4LandingPageMetrics[];
+  currentMonthLandingPageSources: GA4LandingPageSourceMetrics[];
+  lastMonthLandingPageSources: GA4LandingPageSourceMetrics[];
+}
+
+export interface GA4PageDetails {
+  path: string;
+  url: string;
+  title: string | null;
 }
 
 export interface GA4WebsiteData {
   websiteName: string;
   property: string;
+  pages: GA4PageDetails[];
   pv: number;
   activeUsers: number;
+  dailyChannels: GA4ChannelMetrics[];
+  dailySources: GA4SourceMetrics[];
+  dailyLandingPages: GA4LandingPageMetrics[];
+  dailyLandingPageSources: GA4LandingPageSourceMetrics[];
   monthly: GA4MonthlyMetrics;
 }
