@@ -196,7 +196,7 @@ importers:
         version: 18.0.10
       effect:
         specifier: ^4.0.6
-        version: 4.1.5
+        version: 4.1.6
       inversify:
         specifier: ^8.0.0
         version: 8.3.0(reflect-metadata@0.2.2)
@@ -648,8 +648,8 @@ packages:
   ecdsa-sig-formatter@1.0.11:
     resolution: {integrity: sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==}
 
-  effect@4.1.5:
-    resolution: {integrity: sha512-xyR20KhQI0vg2gD8ILUSQRTTESEYJ0JKdP+QD8J37xbwPTqXRxFM/l0+vUVD9fuSvoYruoTqyt33C4FZv1s4TQ==}
+  effect@4.1.6:
+    resolution: {integrity: sha512-P3CxMsdcSCle/7/FnPILd9GJkNqGtduKam2LX9Xsb8LoOjmeQ9Kmsuh16JwtIthaxLyiTCOzUUt+PZsXIohl+A==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -1376,7 +1376,7 @@ snapshots:
     dependencies:
       safe-buffer: 5.2.1
 
-  effect@4.1.5: {}
+  effect@4.1.6: {}
 
   emoji-regex@8.0.0: {}
 
